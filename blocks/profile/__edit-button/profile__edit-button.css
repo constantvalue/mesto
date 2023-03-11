@@ -5,8 +5,9 @@
   background-image: url(../../../images/profile__edit-button.svg);
   background-repeat: no-repeat;
   background-position: center;
-  border: 1px solid #FFFFFF;
-  background-color: black;
+  border: 1px solid #ffffff;
+  background-color: transparent;
   padding: 0;
   grid-area: edit;
+  cursor: pointer;
 }

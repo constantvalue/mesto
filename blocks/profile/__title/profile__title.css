@@ -10,4 +10,7 @@
   line-height: 48px;
   color: #ffffff;
   grid-area: title;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

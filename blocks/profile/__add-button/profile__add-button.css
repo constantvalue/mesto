@@ -4,10 +4,11 @@
   background-image: url(../../../images/profile__add-button.svg);
   background-repeat: no-repeat;
   background-position: center;
-  border: 2px solid #FFFFFF;
+  background-color: transparent;
+  border: 2px solid #ffffff;
   border-radius: 2px;
-  background-color: black;
   padding: 0;
   align-self: center;
   justify-self: flex-end;
+  cursor: pointer;
 }
