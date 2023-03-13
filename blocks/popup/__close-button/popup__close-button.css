@@ -7,8 +7,8 @@
   width: 32px;
   height: 32px;
   position: absolute;
-  left: 101.6%;
-  bottom: 103%;
+  right: -9%;
+  top: -12%;
 }
 
 .popup__close-button:hover {
@@ -21,7 +21,7 @@
     background-image: url(../../../images/CloseIcon320.png);
     width: 20px;
     height: 20px;
-    left: 93.5%;
-    bottom: 105%;
+    right: 0;
+    top: -11%;
   }
 }

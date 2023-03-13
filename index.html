@@ -12,7 +12,6 @@
 <body class="page">
   <header class="header">
     <img src="./images/header__logo.svg" alt="Место лого" class="header__logo">
-    <div class="header__underline"></div>
   </header>
 
   <main class="main">
@@ -20,57 +19,58 @@
       <div class="profile__info">
         <img class="profile__avatar" src="./images/profile__avatar.svg" alt="Аватар">
         <h2 class="profile__title">Жак-Ив Кусто</h2>
-        <button class="profile__edit-button" type="button"></button>
+        <button class="profile__edit-button" type="button" aria-label="Кнопка редактирования"></button>
         <p class="profile__subtitle">Исследователь океана</p>
       </div>
-      <button class="profile__add-button" type="button"></button>
+      <button class="profile__add-button" type="button" aria-label="кнопка добавить"></button>
     </section>
+
     <section class="elements" aria-label="карточки">
       <div class="element">
         <img class="element__image" src="./images/element1.png" alt="Карточка">
         <div class="element__whitebox">
-          <p class="element__title">Карачаевск</p>
-          <button class="element__like-button" type="button"></button>
+          <h2 class="element__title">Карачаевск</h2>
+          <button class="element__like-button" type="button" aria-label="кнопка лайк"></button>
         </div>
       </div>
 
       <div class="element">
         <img class="element__image" src="./images/element2.png" alt="Карточка">
         <div class="element__whitebox">
-          <p class="element__title">Гора Эльбрус</p>
-          <button class="element__like-button" type="button"></button>
+          <h2 class="element__title">Гора Эльбрус</h2>
+          <button class="element__like-button" type="button" aria-label="кнопка лайк"></button>
         </div>
       </div>
 
       <div class="element">
         <img class="element__image" src="./images/element3.png" alt="Карточка">
         <div class="element__whitebox">
-          <p class="element__title">Домбай</p>
-          <button class="element__like-button" type="button"></button>
+          <h2 class="element__title">Домбай</h2>
+          <button class="element__like-button" type="button" aria-label="кнопка лайк"></button>
         </div>
       </div>
 
       <div class="element">
         <img class="element__image" src="./images/element4.png" alt="Карточка">
         <div class="element__whitebox">
-          <p class="element__title">Гора Эльбрус</p>
-          <button class="element__like-button" type="button"></button>
+          <h2 class="element__title">Гора Эльбрус</h2>
+          <button class="element__like-button" type="button" aria-label="кнопка лайк"></button>
         </div>
       </div>
 
       <div class="element">
         <img class="element__image" src="./images/element5.png" alt="Карточка">
         <div class="element__whitebox">
-          <p class="element__title">Домбай</p>
-          <button class="element__like-button" type="button"></button>
+          <h2 class="element__title">Домбай</h2>
+          <button class="element__like-button" type="button" aria-label="кнопка лайк"></button>
         </div>
       </div>
 
       <div class="element">
         <img class="element__image" src="./images/element6.png" alt="Карточка">
         <div class="element__whitebox">
-          <p class="element__title">Карачаево-Черкессия</p>
-          <button class="element__like-button" type="button"></button>
+          <h2 class="element__title">Карачаево-Черкессия</h2>
+          <button class="element__like-button" type="button" aria-label="кнопка лайк"></button>
         </div>
       </div>
     </section>
@@ -81,12 +81,12 @@
   </footer>
 
   <div class="popup">
-    <form class="popup__container">
+    <form class="popup__container" name="formElement">
       <h2 class="popup__heading">Редактировать профиль</h2>
       <input class="popup__input" type="text" id="name" name="name">
       <input class="popup__input" type="text" id="job" name="job">
-      <button class="popup__submit-button" type="submit">Сохранить</button>
-      <button class="popup__close-button" type="button"></button>
+      <button class="popup__submit-button" type="submit" aria-label="кнопка сохранить">Сохранить</button>
+      <button class="popup__close-button" type="button" aria-label="кнопка закрыть окно"></button>
     </form>
   </div>
   <script src="./script/script.js"></script>
