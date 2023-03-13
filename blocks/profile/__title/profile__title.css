@@ -14,3 +14,13 @@
   white-space: nowrap;
   overflow: hidden;
 }
+
+@media screen and (max-width: 768px) {
+  .profile__title {
+    padding: 0;
+    padding-left: 65px;
+    padding-top: 26px;
+    font-size: 27px;
+    line-height: 33px;
+  }
+}

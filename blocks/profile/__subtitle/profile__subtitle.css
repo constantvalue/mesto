@@ -10,3 +10,13 @@
   color: #ffffff;
   grid-area: subtitle;
 }
+
+@media screen and (max-width: 768px) {
+  .profile__subtitle {
+    padding: 0;
+    padding-top: 10px;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+  }
+}

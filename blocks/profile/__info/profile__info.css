@@ -4,3 +4,12 @@
     "avatar title edit"
     "avatar subtitle .";
 }
+
+@media screen and (max-width: 768px) {
+  .profile__info {
+    grid-template-areas:
+      "avatar avatar"
+      "title edit"
+      "subtitle subtitle";
+  }
+}

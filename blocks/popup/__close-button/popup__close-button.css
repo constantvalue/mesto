@@ -15,3 +15,13 @@
   opacity: 0.6;
   transition: 0.6s;
 }
+
+@media screen and (max-width: 768px) {
+  .popup__close-button {
+    background-image: url(../../../images/CloseIcon320.png);
+    width: 20px;
+    height: 20px;
+    left: 93.5%;
+    bottom: 105%;
+  }
+}

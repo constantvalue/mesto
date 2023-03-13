@@ -17,3 +17,11 @@
   opacity: 0.6;
   transition: 0.6s;
 }
+
+@media screen and (max-width: 768px) {
+  .profile__add-button {
+    width: 282px;
+    margin-top: 31px;
+    background-image: url(../../../images/profile__add-button320.svg);
+  }
+}
