@@ -12,15 +12,23 @@ const formElement = document.querySelector(".popup__container");
 // Находим поля формы profile в DOM
 const nameInput = formElement.querySelector("#name");
 const jobInput = formElement.querySelector("#job");
+//находим форму card в DOM
+const formCardElement = document.querySelector("#cardForm");
 //поля формы card в DOM
-const titleInputCard = formElement.querySelector("#title-card");
-const linkInputCard = formElement.querySelector("#link-card");
+const titleInputCard = formCardElement.querySelector("#title-card");
+const linkInputCard = formCardElement.querySelector("#link-card");
 //кнопки закрытия попапов
 const popupCloseProfile = document.querySelector(".popup__close-button");
 const popupCloseCard = cardPopup.querySelector(".popup__close-button");
 //поиск темплейта. Контейнер для темплейта
 const cardContainer = document.querySelector(".elements");
 const cardTemplate = document.querySelector(".template__card").content;
+const popupImage = document.querySelector(".popup__image");
+const popupImageHeading = document.querySelector(".popup__image-heading");
+const showPopupImage = document.querySelector(".popup-image");
+const imagePopupCloseButton = document.querySelector(
+  ".popup__close-button_position_image-popup"
+);
 //объекты для создания карточек по умолчанию.
 const initialCards = [
   {
@@ -83,32 +91,67 @@ popupCloseCard.addEventListener("click", function () {
   closePopup(cardPopup);
 });
 
-// //handler для сабмита формы.
-// formElement.addEventListener("submit", handleFormSubmit);
-
 //функция создания карточки
 const createCard = function (object) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardImage = cardElement.querySelector(".element__image");
   const cardElementTitle = cardElement.querySelector(".element__title");
   const cardLikeButton = cardElement.querySelector(".element__like-button");
+  const cardTrashButton = cardElement.querySelector(".element__trash-button");
 
-
-  cardImage.src = object.link;
   cardImage.alt = object.name;
   cardElementTitle.textContent = object.name;
+  cardImage.src = object.link;
 
-  cardLikeButton.addEventListener("click", function() {
+  cardImage.addEventListener("click", function () {
+    showImagePopup(object);
+  });
+
+  cardTrashButton.addEventListener("click", removeCard);
+
+  cardLikeButton.addEventListener("click", function () {
     cardLikeButton.classList.toggle("element__like-button_active");
   });
 
   return cardElement;
 };
 
-//дефолтное состояние страницы с массивом initialCards.
-initialCards.forEach((item) => {
-  const card = createCard(item);
+const removeCard = function (evt) {
+  const cardToRemove = evt.target.closest(".element");
+  cardToRemove.remove();
+};
+
+//наполняем страницу карточками из массива initialCards
+initialCards.forEach(function (object) {
+  const card = createCard(object);
   cardContainer.append(card);
 });
 
+//функция открытия попапа картинки
+const showImagePopup = function (object) {
+  popupImageHeading.textContent = object.name;
+  popupImage.alt = object.name;
+  popupImage.src = object.link;
+  openPopup(showPopupImage);
+};
 
+imagePopupCloseButton.addEventListener("click", function () {
+  closePopup(showPopupImage);
+});
+
+//этот слушатель передаст значения полей ввода в объект. Объект будет использован в prependCard.
+formCardElement.addEventListener("submit", function (evt) {
+  evt.preventDefault();
+  //создадим объект, который будем передавать в функцию prependCard
+  const object = { name: titleInputCard.value, link: linkInputCard.value };
+  prependCard(object);
+  closePopup(cardPopup);
+  titleInputCard.value = "";
+  linkInputCard.value = "";
+});
+
+//функция добавления карточки. Добавляет карточку в начало Grid контейнера, после нажатия по кнопке сабмита в попапе создания карточки.
+prependCard = function (object) {
+  const card = createCard(object);
+  cardContainer.prepend(card);
+};
