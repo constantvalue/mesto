@@ -2,3 +2,10 @@
   top: -8%;
   right: -6%;
 }
+
+@media screen and (max-width: 768px) {
+  .popup__close-button_position_image-popup {
+    top: -30px;
+    right: 0;
+  }
+}

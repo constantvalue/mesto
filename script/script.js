@@ -7,7 +7,7 @@ const profileInfoTitle = document.querySelector(".profile__title");
 const profileInfoSubtitle = document.querySelector(".profile__subtitle");
 //card попап
 const cardPopup = document.querySelector(".popup-card");
-// Находим форму в DOM (форма внутри попапа)
+// Находим форму profile в DOM (форма внутри попапа)
 const formElement = document.querySelector(".popup__container");
 // Находим поля формы profile в DOM
 const nameInput = formElement.querySelector("#name");
@@ -20,15 +20,15 @@ const linkInputCard = formCardElement.querySelector("#link-card");
 //кнопки закрытия попапов
 const popupCloseProfile = document.querySelector(".popup__close-button");
 const popupCloseCard = cardPopup.querySelector(".popup__close-button");
+const imagePopupCloseButton = document.querySelector(".popup__close-button_position_image-popup");
 //поиск темплейта. Контейнер для темплейта
 const cardContainer = document.querySelector(".elements");
-const cardTemplate = document.querySelector(".template__card").content;
+const cardTemplate = document.querySelector(".template").content;
+//поиск попапа image и всего что с ним связано
 const popupImage = document.querySelector(".popup__image");
 const popupImageHeading = document.querySelector(".popup__image-heading");
 const showPopupImage = document.querySelector(".popup-image");
-const imagePopupCloseButton = document.querySelector(
-  ".popup__close-button_position_image-popup"
-);
+
 //объекты для создания карточек по умолчанию.
 const initialCards = [
   {
@@ -71,14 +71,14 @@ profileEditButton.addEventListener("click", function () {
   nameInput.value = profileInfoTitle.textContent;
   jobInput.value = profileInfoSubtitle.textContent;
 });
-//Закрытие попапа с хэндлером сабмита.
-formElement.addEventListener("submit", function (evt) {
-  evt.preventDefault();
+//Закрытие попапа profile и запись значений в верстку
+formElement.addEventListener("submit", function (event) {
+  event.preventDefault();
   profileInfoTitle.textContent = nameInput.value;
   profileInfoSubtitle.textContent = jobInput.value;
   closePopup(profilePopup);
 });
-
+//слушатель кнопки закрытия попапа profile
 popupCloseProfile.addEventListener("click", function () {
   closePopup(profilePopup);
 });
@@ -115,9 +115,9 @@ const createCard = function (object) {
 
   return cardElement;
 };
-
-const removeCard = function (evt) {
-  const cardToRemove = evt.target.closest(".element");
+// удаление карточек реализовано с помощью объекта event
+const removeCard = function (event) {
+  const cardToRemove = event.target.closest(".element");
   cardToRemove.remove();
 };
 
@@ -134,16 +134,19 @@ const showImagePopup = function (object) {
   popupImage.src = object.link;
   openPopup(showPopupImage);
 };
-
+//слушатель кнопки закрытия попапа Image
 imagePopupCloseButton.addEventListener("click", function () {
   closePopup(showPopupImage);
 });
 
-//этот слушатель передаст значения полей ввода в объект. Объект будет использован в prependCard.
-formCardElement.addEventListener("submit", function (evt) {
-  evt.preventDefault();
-  //создадим объект, который будем передавать в функцию prependCard
-  const object = { name: titleInputCard.value, link: linkInputCard.value };
+//этот слушатель запишет значения полей ввода в объект { name, link }. Объект будет использован в prependCard.
+formCardElement.addEventListener("submit", function (event) {
+  event.preventDefault();
+  //создаю объект, который буду передавать в функцию prependCard
+  const object = {
+    name: titleInputCard.value,
+    link: linkInputCard.value,
+  };
   prependCard(object);
   closePopup(cardPopup);
   titleInputCard.value = "";
