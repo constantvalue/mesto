@@ -1,6 +1,7 @@
 const profileEditButton = document.querySelector(".profile__edit-button");
 const profileAddButton = document.querySelector(".profile__add-button");
 const popupSubmitButton = document.querySelector(".popup__submit-button");
+const closeButtons = document.querySelectorAll(".popup__close-button");
 //profile попап и контент
 const profilePopup = document.querySelector(".popup-profile");
 const profileInfoTitle = document.querySelector(".profile__title");
@@ -20,7 +21,9 @@ const linkInputCard = formCardElement.querySelector("#link-card");
 //кнопки закрытия попапов
 const popupCloseProfile = document.querySelector(".popup__close-button");
 const popupCloseCard = cardPopup.querySelector(".popup__close-button");
-const imagePopupCloseButton = document.querySelector(".popup__close-button_position_image-popup");
+const imagePopupCloseButton = document.querySelector(
+  ".popup__close-button_position_image-popup"
+);
 //поиск темплейта. Контейнер для темплейта
 const cardContainer = document.querySelector(".elements");
 const cardTemplate = document.querySelector(".template").content;
@@ -65,6 +68,15 @@ const openPopup = function (popup) {
 const closePopup = function (popup) {
   popup.classList.remove("popup_opened");
 };
+
+//функция закрытия любого попапа с классом .popup
+closeButtons.forEach((button) => {
+  // находим 1 раз ближайший к крестику попап
+  const popup = button.closest(".popup");
+  // устанавливаем обработчик закрытия на крестик
+  button.addEventListener("click", () => closePopup(popup));
+});
+
 //слушатели для отрытия, наполнения и закрытия попапа profile
 profileEditButton.addEventListener("click", function () {
   openPopup(profilePopup);
@@ -78,17 +90,10 @@ formElement.addEventListener("submit", function (event) {
   profileInfoSubtitle.textContent = jobInput.value;
   closePopup(profilePopup);
 });
-//слушатель кнопки закрытия попапа profile
-popupCloseProfile.addEventListener("click", function () {
-  closePopup(profilePopup);
-});
 
 //слушатели для открытия и закрытия попапа card
 profileAddButton.addEventListener("click", function () {
   openPopup(cardPopup);
-});
-popupCloseCard.addEventListener("click", function () {
-  closePopup(cardPopup);
 });
 
 //функция создания карточки
@@ -134,10 +139,6 @@ const showImagePopup = function (object) {
   popupImage.src = object.link;
   openPopup(showPopupImage);
 };
-//слушатель кнопки закрытия попапа Image
-imagePopupCloseButton.addEventListener("click", function () {
-  closePopup(showPopupImage);
-});
 
 //этот слушатель запишет значения полей ввода в объект { name, link }. Объект будет использован в prependCard.
 formCardElement.addEventListener("submit", function (event) {
@@ -149,8 +150,7 @@ formCardElement.addEventListener("submit", function (event) {
   };
   prependCard(object);
   closePopup(cardPopup);
-  titleInputCard.value = "";
-  linkInputCard.value = "";
+  event.target.reset();
 });
 
 //функция добавления карточки. Добавляет карточку в начало Grid контейнера, после нажатия по кнопке сабмита в попапе создания карточки.
