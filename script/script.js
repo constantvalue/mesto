@@ -63,10 +63,30 @@ const initialCards = [
 //открытие попапа
 const openPopup = function (popup) {
   popup.classList.add("popup_opened");
+  //навешиваем слушатель при открытии.
+  document.addEventListener("keydown", closeOnEscape);
+  popup.addEventListener("click", closeByClickOnOverlay);
 };
 // закрытие попапа
 const closePopup = function (popup) {
   popup.classList.remove("popup_opened");
+  //убираем слушатель при закрытии. Не возникают ошибки в консоли.
+  document.removeEventListener("keydown", closeOnEscape);
+  popup.removeEventListener("click", closeByClickOnOverlay);
+};
+
+//закрытие по keydown 'escape'
+
+const closeOnEscape = function (evt) {
+  if (evt.key === "Escape") {
+    const openedPopup = document.querySelector(".popup_opened");
+    closePopup(openedPopup);
+  }
+};
+
+//закрытие при клики по оверлею
+const closeByClickOnOverlay = function (evt) {
+  closePopup(evt.target);
 };
 
 //функция закрытия любого попапа с классом .popup
