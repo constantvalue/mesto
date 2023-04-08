@@ -9,6 +9,7 @@ const profileInfoSubtitle = document.querySelector(".profile__subtitle");
 //card попап
 const cardPopup = document.querySelector(".popup-card");
 // Находим форму profile в DOM (форма внутри попапа)
+const formProfileElement = document.querySelector("#profileForm");
 const formElement = document.querySelector(".popup__form");
 // Находим поля формы profile в DOM
 const nameInput = formElement.querySelector("#popup-profile-input-name");
@@ -21,9 +22,7 @@ const linkInputCard = formCardElement.querySelector("#popup-card-link-value");
 //кнопки закрытия попапов
 const popupCloseProfile = document.querySelector(".popup__close-button");
 const popupCloseCard = cardPopup.querySelector(".popup__close-button");
-const imagePopupCloseButton = document.querySelector(
-  ".popup__close-button_position_image-popup"
-);
+const imagePopupCloseButton = document.querySelector(".popup__close-button_position_image-popup");
 //поиск темплейта. Контейнер для темплейта
 const cardContainer = document.querySelector(".elements");
 const cardTemplate = document.querySelector(".template").content;
@@ -31,6 +30,11 @@ const cardTemplate = document.querySelector(".template").content;
 const popupImage = document.querySelector(".popup__image");
 const popupImageHeading = document.querySelector(".popup__image-heading");
 const showPopupImage = document.querySelector(".popup-image");
+
+//преобразуем node-list в массив, для возможности использования метода .some внутри функции hasInvalidInput.
+const popupFormCardInputs = Array.from(formCardElement.querySelectorAll(".popup__input"));
+const popupFormProfileInputs = Array.from(formProfileElement.querySelectorAll(".popup__input"));
+
 
 //объекты для создания карточек по умолчанию.
 const initialCards = [
@@ -96,6 +100,7 @@ closeButtons.forEach((button) => {
   const popup = button.closest(".popup");
   // устанавливаем обработчик закрытия на крестик
   button.addEventListener("click", () => closePopup(popup));
+
 });
 
 //слушатели для отрытия, наполнения и закрытия попапа profile
@@ -104,6 +109,7 @@ profileEditButton.addEventListener("click", function () {
   resetErrors(profilePopup, validationConfig);
   nameInput.value = profileInfoTitle.textContent;
   jobInput.value = profileInfoSubtitle.textContent;
+  toggleButtonState(popupFormProfileInputs, validationConfig, formProfileElement);
 });
 //Закрытие попапа profile и запись значений в верстку
 formElement.addEventListener("submit", function (event) {
@@ -171,8 +177,9 @@ formCardElement.addEventListener("submit", function (event) {
     link: linkInputCard.value,
   };
   prependCard(object);
-  closePopup(cardPopup);
   event.target.reset();
+  closePopup(cardPopup);
+  toggleButtonState(popupFormCardInputs, validationConfig, formCardElement);
 });
 
 //функция добавления карточки. Добавляет карточку в начало Grid контейнера, после нажатия по кнопке сабмита в попапе создания карточки.
@@ -180,3 +187,5 @@ prependCard = function (object) {
   const card = createCard(object);
   cardContainer.prepend(card);
 };
+
+

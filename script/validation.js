@@ -33,7 +33,7 @@ const hideInputError = function (input, validationConfig)  {
   const errorElement = document.querySelector(`.${input.id}-error`);
   input.classList.remove(validationConfig.inputErrorClass);
   errorElement.classList.remove(validationConfig.errorClass);
-  //только в этой функции мы сбрасываем текст ошибок.
+  //сбрасываем текст ошибок.
   errorElement.textContent = "";
 };
 
