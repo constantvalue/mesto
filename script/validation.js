@@ -1,7 +1,7 @@
 // включение валидации вызовом enableValidation
 // все настройки передаются при вызове
 
-const validationConfig ={
+const validationConfig = {
   formSelector: ".popup__form",
   inputSelector: ".popup__input",
   submitButtonSelector: ".popup__submit-button",
@@ -10,10 +10,9 @@ const validationConfig ={
   errorClass: "popup__error_visible",
 };
 
+
 const enableValidation = (validationConfig) => {
-  const formList = Array.from(
-    document.querySelectorAll(validationConfig.formSelector)
-  );
+  const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
   formList.forEach((formElement) => {
     formElement.addEventListener("submit", function (evt) {
       evt.preventDefault();
@@ -22,48 +21,63 @@ const enableValidation = (validationConfig) => {
   });
 };
 
-const setEventListeners = function(formElement, validationConfig) {
-  const formInputs = Array.from(formElement.querySelectorAll(validationConfig.inputSelector))
-  formInputs.forEach(input => {
-    input.addEventListener("input", () => {
-      checkInputValidity(input, validationConfig);
-    })
-  })
-}
-
-const checkInputValidity = (input, validationConfig) => {
-  if (!input.validity.valid) {
-    showInputError(input, validationConfig.inputErrorClass, validationConfig.errorClass);
-  } else {
-    hideInputError(input, validationConfig.inputErrorClass, validationConfig.errorClass);
-  }
-};
-
-const showInputError = (input, inputErrorClass, errorClass) => {
+const showInputError = function (input, validationConfig)  {
   const errorElement = document.querySelector(`.${input.id}-error`);
-  console.log(errorElement);
   input.classList.add(validationConfig.inputErrorClass);
   errorElement.classList.add(validationConfig.errorClass);
   errorElement.textContent = input.validationMessage;
 };
 
-
-
-const hideInputError = (input, inputErrorClass, errorClass) => {
+const hideInputError = function (input, validationConfig)  {
   const errorElement = document.querySelector(`.${input.id}-error`);
   input.classList.remove(validationConfig.inputErrorClass);
   errorElement.classList.remove(validationConfig.errorClass);
   errorElement.textContent = "";
 };
 
-const hasInvalidInput = function (inputList) {
-  return inputList.some((inputElement) => {
+
+
+const setEventListeners = function (formElement, validationConfig) {
+  const formInputs = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
+  //вызываем функцию toggleButtonState, чтобы кнопка была неактивная по умолчанию.
+  toggleButtonState(formInputs, validationConfig, formElement);
+  formInputs.forEach((input) => {
+    //слушаем инпуты, на каждом вводе символа проверяем валидность поля ввода.
+    input.addEventListener("input", () => {
+      checkInputValidity(input, validationConfig);
+      //при каждом нажатии проверяем - нужно ли нам "перекрасить" кнопку сабмита и сделать ее неактивной со свойством cursor: not-allowed;
+      toggleButtonState(formInputs, validationConfig, formElement);
+    });
+  });
+};
+
+const checkInputValidity = function (input, validationConfig) {
+  if (!input.validity.valid) {
+    showInputError(input, validationConfig);
+  } else {
+    hideInputError(input, validationConfig);
+  }
+};
+
+
+const hasInvalidInput = function (formInputs) {
+  return formInputs.some((inputElement) => {
     return !inputElement.validity.valid;
   });
 };
 
-
+const toggleButtonState = function (formInputs, validationConfig, formElement) {
+  const submitButton = formElement.querySelector(validationConfig.submitButtonSelector);
+  if (hasInvalidInput(formInputs)) {
+    submitButton.classList.add(validationConfig.inactiveButtonClass);
+    submitButton.setAttribute("disabled", true);
+  } else {
+    submitButton.classList.remove(validationConfig.inactiveButtonClass);
+    submitButton.removeAttribute("disabled");
+  }
+};
 
 
 
 enableValidation(validationConfig);
+
