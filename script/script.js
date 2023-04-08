@@ -101,6 +101,7 @@ closeButtons.forEach((button) => {
 //слушатели для отрытия, наполнения и закрытия попапа profile
 profileEditButton.addEventListener("click", function () {
   openPopup(profilePopup);
+  resetErrors(profilePopup, validationConfig);
   nameInput.value = profileInfoTitle.textContent;
   jobInput.value = profileInfoSubtitle.textContent;
 });

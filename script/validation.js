@@ -10,7 +10,6 @@ const validationConfig = {
   errorClass: "popup__error_visible",
 };
 
-
 const enableValidation = (validationConfig) => {
   const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
   formList.forEach((formElement) => {
@@ -21,21 +20,22 @@ const enableValidation = (validationConfig) => {
   });
 };
 
+//функция показа <span> ошибки по аналогии с тренажером
 const showInputError = function (input, validationConfig)  {
+  //с помощью шаблонных строк нахожу контейнер для классса ошибки и для текста из свойства .validationMessage
   const errorElement = document.querySelector(`.${input.id}-error`);
   input.classList.add(validationConfig.inputErrorClass);
   errorElement.classList.add(validationConfig.errorClass);
   errorElement.textContent = input.validationMessage;
 };
-
+//все по аналогии с функцией showInputError
 const hideInputError = function (input, validationConfig)  {
   const errorElement = document.querySelector(`.${input.id}-error`);
   input.classList.remove(validationConfig.inputErrorClass);
   errorElement.classList.remove(validationConfig.errorClass);
+  //только в этой функции мы сбрасываем текст ошибок.
   errorElement.textContent = "";
 };
-
-
 
 const setEventListeners = function (formElement, validationConfig) {
   const formInputs = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
@@ -59,7 +59,6 @@ const checkInputValidity = function (input, validationConfig) {
   }
 };
 
-
 const hasInvalidInput = function (formInputs) {
   return formInputs.some((inputElement) => {
     return !inputElement.validity.valid;
@@ -77,7 +76,16 @@ const toggleButtonState = function (formInputs, validationConfig, formElement) {
   }
 };
 
-
+//функция, которая очистит попап профиля от ошибок при открытии. validationConfig в теле функции используется только для ремува классов ошибок.
+// поэтому берём validationConfig из глобальной области видимости.
+const resetErrors = function (popup) {
+  //коллекция popupInputs уже имеет метод .forEach
+  //поэтому я не преобразовываю в массив с помощью Array.from
+  const popupInputs = popup.querySelectorAll(validationConfig.inputSelector);
+  popupInputs.forEach((input) => {
+    hideInputError(input, validationConfig);
+  })
+}
 
 enableValidation(validationConfig);
 
