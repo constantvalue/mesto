@@ -9,15 +9,15 @@ const profileInfoSubtitle = document.querySelector(".profile__subtitle");
 //card попап
 const cardPopup = document.querySelector(".popup-card");
 // Находим форму profile в DOM (форма внутри попапа)
-const formElement = document.querySelector(".popup__container");
+const formElement = document.querySelector(".popup__form");
 // Находим поля формы profile в DOM
-const nameInput = formElement.querySelector("#name");
-const jobInput = formElement.querySelector("#job");
+const nameInput = formElement.querySelector("#popup-profile-input-name");
+const jobInput = formElement.querySelector("#popup-profile-input-job");
 //находим форму card в DOM
 const formCardElement = document.querySelector("#cardForm");
 //поля формы card в DOM
-const titleInputCard = formCardElement.querySelector("#title-card");
-const linkInputCard = formCardElement.querySelector("#link-card");
+const titleInputCard = formCardElement.querySelector("#popup-card-title-text");
+const linkInputCard = formCardElement.querySelector("#popup-card-link-value");
 //кнопки закрытия попапов
 const popupCloseProfile = document.querySelector(".popup__close-button");
 const popupCloseCard = cardPopup.querySelector(".popup__close-button");
@@ -65,14 +65,15 @@ const openPopup = function (popup) {
   popup.classList.add("popup_opened");
   //навешиваем слушатель при открытии.
   document.addEventListener("keydown", closeOnEscape);
-  popup.addEventListener("click", closeByClickOnOverlay);
+  //не использую "click", ибо "click" сработает, если зажать левую кнопку мыши вытащить курсор за пределы модального окна и отпустить кнопку.
+  popup.addEventListener("mousedown", closeByClickOnOverlay);
 };
 // закрытие попапа
 const closePopup = function (popup) {
   popup.classList.remove("popup_opened");
   //убираем слушатель при закрытии. Не возникают ошибки в консоли.
   document.removeEventListener("keydown", closeOnEscape);
-  popup.removeEventListener("click", closeByClickOnOverlay);
+  popup.removeEventListener("mousedown", closeByClickOnOverlay);
 };
 
 //закрытие по keydown 'escape'
