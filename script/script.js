@@ -1,3 +1,6 @@
+//нодлист попапов
+const popups = document.querySelectorAll(".popup");
+
 const profileEditButton = document.querySelector(".profile__edit-button");
 const profileAddButton = document.querySelector(".profile__add-button");
 const popupSubmitButton = document.querySelector(".popup__submit-button");
@@ -10,10 +13,9 @@ const profileInfoSubtitle = document.querySelector(".profile__subtitle");
 const cardPopup = document.querySelector(".popup-card");
 // Находим форму profile в DOM (форма внутри попапа)
 const formProfileElement = document.querySelector("#profileForm");
-const formElement = document.querySelector(".popup__form");
 // Находим поля формы profile в DOM
-const nameInput = formElement.querySelector("#popup-profile-input-name");
-const jobInput = formElement.querySelector("#popup-profile-input-job");
+const nameInput = formProfileElement.querySelector("#popup-profile-input-name");
+const jobInput = formProfileElement.querySelector("#popup-profile-input-job");
 //находим форму card в DOM
 const formCardElement = document.querySelector("#cardForm");
 //поля формы card в DOM
@@ -34,6 +36,8 @@ const showPopupImage = document.querySelector(".popup-image");
 //преобразуем node-list в массив, для возможности использования метода .some внутри функции hasInvalidInput.
 const popupFormCardInputs = Array.from(formCardElement.querySelectorAll(".popup__input"));
 const popupFormProfileInputs = Array.from(formProfileElement.querySelectorAll(".popup__input"));
+
+
 
 
 //объекты для создания карточек по умолчанию.
@@ -67,17 +71,12 @@ const initialCards = [
 //открытие попапа
 const openPopup = function (popup) {
   popup.classList.add("popup_opened");
-  //навешиваем слушатель при открытии.
   document.addEventListener("keydown", closeOnEscape);
-  //не использую "click", ибо "click" сработает, если зажать левую кнопку мыши вытащить курсор за пределы модального окна и отпустить кнопку.
-  popup.addEventListener("mousedown", closeByClickOnOverlay);
 };
 // закрытие попапа
 const closePopup = function (popup) {
   popup.classList.remove("popup_opened");
-  //убираем слушатель при закрытии. Не возникают ошибки в консоли.
   document.removeEventListener("keydown", closeOnEscape);
-  popup.removeEventListener("mousedown", closeByClickOnOverlay);
 };
 
 //закрытие по keydown 'escape'
@@ -90,9 +89,17 @@ const closeOnEscape = function (evt) {
 };
 
 //закрытие при клики по оверлею
+//добавил условную конструкцию
 const closeByClickOnOverlay = function (evt) {
-  closePopup(evt.target);
+  if (evt.currentTarget === evt.target) {
+    closePopup(evt.currentTarget);
+  }
 };
+
+popups.forEach((popup) => {
+  popup.addEventListener("mousedown", closeByClickOnOverlay);
+});
+
 
 //функция закрытия любого попапа с классом .popup
 closeButtons.forEach((button) => {
@@ -112,7 +119,7 @@ profileEditButton.addEventListener("click", function () {
   toggleButtonState(popupFormProfileInputs, validationConfig, formProfileElement);
 });
 //Закрытие попапа profile и запись значений в верстку
-formElement.addEventListener("submit", function (event) {
+formProfileElement.addEventListener("submit", function (event) {
   event.preventDefault();
   profileInfoTitle.textContent = nameInput.value;
   profileInfoSubtitle.textContent = jobInput.value;
