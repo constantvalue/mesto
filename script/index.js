@@ -1,3 +1,5 @@
+import { FormValidator } from "./FormValidator.js";
+
 //нодлист попапов
 const popups = document.querySelectorAll(".popup");
 
@@ -190,9 +192,36 @@ formCardElement.addEventListener("submit", function (event) {
 });
 
 //функция добавления карточки. Добавляет карточку в начало Grid контейнера, после нажатия по кнопке сабмита в попапе создания карточки.
-prependCard = function (object) {
+const prependCard = function (object) {
   const card = createCard(object);
   cardContainer.prepend(card);
 };
+
+
+// ---------------------------------------------VALIDATION--------------------------------------------------------------
+
+const validationConfig = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__submit-button",
+  inactiveButtonClass: "popup__submit-button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
+};
+
+
+const validatePopupProfile = new FormValidator (validationConfig, formProfileElement);
+validatePopupProfile.enableValidation();
+
+// const validatePopupCard = new FormValidator (validationConfig, formCardElement);
+// validatePopupCard.enableValidation();
+
+
+// --------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------
 
 

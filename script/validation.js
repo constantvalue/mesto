@@ -1,5 +1,7 @@
+
 // включение валидации вызовом enableValidation
 // все настройки передаются при вызове
+
 
 const validationConfig = {
   formSelector: ".popup__form",
@@ -85,4 +87,5 @@ const resetErrors = function (popup) {
 }
 
 enableValidation(validationConfig);
+
 
