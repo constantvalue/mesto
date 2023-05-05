@@ -30,8 +30,6 @@ const popupImage = document.querySelector(".popup__image");
 const popupImageHeading = document.querySelector(".popup__image-heading");
 const showPopupImage = document.querySelector(".popup-image");
 
-
-
 //объекты для создания карточек по умолчанию.
 const initialCards = [
   {
@@ -67,9 +65,21 @@ const showImagePopup = function (object) {
   openPopup(showPopupImage);
 };
 
-initialCards.forEach((element) => {
+//функция для prepend
+const prependCard = (item) => {
+  cardContainer.prepend(item);
+};
+
+function createCard(element) {
+  // тут создаете карточку и возвращаете ее
   const card = new Card(element, "#card_template", showImagePopup);
-  cardContainer.prepend(card.generateCard());
+  const cardElement = card.generateCard();
+  return cardElement;
+}
+
+initialCards.forEach((element) => {
+  const card = createCard(element);
+  prependCard(card);
 });
 
 //открытие попапа
@@ -141,10 +151,8 @@ formCardElement.addEventListener("submit", function (event) {
     name: titleInputCard.value,
     link: linkInputCard.value,
   };
-  //создаем экземпляр класса при нажатии на сабмит.
-  const newCard = new Card(object, "#card_template", showImagePopup);
-  //добавляем в разметку с помощью метода prepend.
-  cardContainer.prepend(newCard.generateCard());
+  const newCard = createCard(object);
+  prependCard(newCard);
   event.target.reset();
   closePopup(cardPopup);
 });

@@ -30,12 +30,20 @@ export class Card {
     this._showImagePopup(this._initialCards);
   }
 
+  _deleteCard() {
+    this._element.remove();
+  }
+
+  _toggleLike(evt) {
+    evt.target.classList.toggle("element__like-button_active");
+  }
+
   //навешиваем слушатели на все возможные события внутри карточки.
   _setEventListeners() {
     this._image.addEventListener("click", () => this._showImageOnClick());
 
-    this._element.querySelector(".element__trash-button").addEventListener("click", () => this._element.remove());
+    this._element.querySelector(".element__trash-button").addEventListener("click", () => this._deleteCard());
 
-    this._element.querySelector(".element__like-button").addEventListener("click", (evt) => evt.target.classList.toggle("element__like-button_active"));
+    this._element.querySelector(".element__like-button").addEventListener("click", (evt) => this._toggleLike(evt));
   }
 }

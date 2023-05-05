@@ -2,12 +2,12 @@ export class FormValidator {
   constructor(config, formSelector) {
     this._formSelector = formSelector;
     this._config = config;
+    this._submitButton = this._formSelector.querySelector(this._config.submitButtonSelector);
   }
 
   // публичный метод для включения валидации
   enableValidation() {
     this._formInputs = Array.from(this._formSelector.querySelectorAll(this._config.inputSelector));
-    this._formButton = this._formSelector.querySelectorAll(this._config.submitButtonSelector);
     this._setEventListeners();
   }
 
@@ -53,13 +53,12 @@ export class FormValidator {
   }
 
   _toggleButtonState() {
-    const submitButton = this._formSelector.querySelector(this._config.submitButtonSelector);
     if (this._hasInvalidInput(this._formInputs)) {
-      submitButton.classList.add(this._config.inactiveButtonClass);
-      submitButton.setAttribute("disabled", true);
+      this._submitButton.classList.add(this._config.inactiveButtonClass);
+      this._submitButton.setAttribute("disabled", true);
     } else {
-      submitButton.classList.remove(this._config.inactiveButtonClass);
-      submitButton.removeAttribute("disabled");
+      this._submitButton.classList.remove(this._config.inactiveButtonClass);
+      this._submitButton.removeAttribute("disabled");
     }
   }
 
