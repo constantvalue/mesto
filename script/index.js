@@ -6,7 +6,6 @@ const popups = document.querySelectorAll(".popup");
 
 const profileEditButton = document.querySelector(".profile__edit-button");
 const profileAddButton = document.querySelector(".profile__add-button");
-const popupSubmitButton = document.querySelector(".popup__submit-button");
 const closeButtons = document.querySelectorAll(".popup__close-button");
 //profile попап и контент
 const profilePopup = document.querySelector(".popup-profile");
@@ -24,22 +23,14 @@ const formCardElement = document.querySelector("#cardForm");
 //поля формы card в DOM
 const titleInputCard = formCardElement.querySelector("#popup-card-title-text");
 const linkInputCard = formCardElement.querySelector("#popup-card-link-value");
-//кнопки закрытия попапов
-const popupCloseProfile = document.querySelector(".popup__close-button");
-const popupCloseCard = cardPopup.querySelector(".popup__close-button");
-const imagePopupCloseButton = document.querySelector(".popup__close-button_position_image-popup");
 //поиск темплейта. Контейнер для темплейта
 const cardContainer = document.querySelector(".elements");
-const cardTemplateSelector = document.querySelector("#template_card");
-const cardTemplate = document.querySelector(".template").content;
 //поиск попапа image и всего что с ним связано
 const popupImage = document.querySelector(".popup__image");
 const popupImageHeading = document.querySelector(".popup__image-heading");
 const showPopupImage = document.querySelector(".popup-image");
 
-//преобразуем node-list в массив, для возможности использования метода .some внутри функции hasInvalidInput.
-const popupFormCardInputs = Array.from(formCardElement.querySelectorAll(".popup__input"));
-const popupFormProfileInputs = Array.from(formProfileElement.querySelectorAll(".popup__input"));
+
 
 //объекты для создания карточек по умолчанию.
 const initialCards = [
@@ -154,7 +145,6 @@ formCardElement.addEventListener("submit", function (event) {
   const newCard = new Card(object, "#card_template", showImagePopup);
   //добавляем в разметку с помощью метода prepend.
   cardContainer.prepend(newCard.generateCard());
-  // prependCard(object);
   event.target.reset();
   closePopup(cardPopup);
 });
