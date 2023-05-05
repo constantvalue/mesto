@@ -41,9 +41,6 @@ const showPopupImage = document.querySelector(".popup-image");
 const popupFormCardInputs = Array.from(formCardElement.querySelectorAll(".popup__input"));
 const popupFormProfileInputs = Array.from(formProfileElement.querySelectorAll(".popup__input"));
 
-
-
-
 //объекты для создания карточек по умолчанию.
 const initialCards = [
   {
@@ -72,7 +69,6 @@ const initialCards = [
   },
 ];
 
-
 const showImagePopup = function (object) {
   popupImageHeading.textContent = object.name;
   popupImage.alt = object.name;
@@ -80,17 +76,10 @@ const showImagePopup = function (object) {
   openPopup(showPopupImage);
 };
 
-
-
-initialCards.forEach(element => {
+initialCards.forEach((element) => {
   const card = new Card(element, "#card_template", showImagePopup);
-  card.generateCard
-
-
+  cardContainer.prepend(card.generateCard());
 });
-
-
-
 
 //открытие попапа
 const openPopup = function (popup) {
@@ -104,7 +93,6 @@ const closePopup = function (popup) {
 };
 
 //закрытие по keydown 'escape'
-
 const closeOnEscape = function (evt) {
   if (evt.key === "Escape") {
     const openedPopup = document.querySelector(".popup_opened");
@@ -124,14 +112,12 @@ popups.forEach((popup) => {
   popup.addEventListener("mousedown", closeByClickOnOverlay);
 });
 
-
 //функция закрытия любого попапа с классом .popup
 closeButtons.forEach((button) => {
   // находим 1 раз ближайший к крестику попап
   const popup = button.closest(".popup");
   // устанавливаем обработчик закрытия на крестик
   button.addEventListener("click", () => closePopup(popup));
-
 });
 
 //слушатели для отрытия, наполнения и закрытия попапа profile
@@ -156,9 +142,6 @@ profileAddButton.addEventListener("click", function () {
   validatePopupCard.resetErrors();
 });
 
-
-
-
 //этот слушатель запишет значения полей ввода в объект { name, link }. Объект будет использован в prependCard.
 formCardElement.addEventListener("submit", function (event) {
   event.preventDefault();
@@ -167,13 +150,14 @@ formCardElement.addEventListener("submit", function (event) {
     name: titleInputCard.value,
     link: linkInputCard.value,
   };
-  prependCard(object);
+  //создаем экземпляр класса при нажатии на сабмит.
+  const newCard = new Card(object, "#card_template", showImagePopup);
+  //добавляем в разметку с помощью метода prepend.
+  cardContainer.prepend(newCard.generateCard());
+  // prependCard(object);
   event.target.reset();
   closePopup(cardPopup);
 });
-
-
-
 
 // ---------------------------------------------VALIDATION--------------------------------------------------------------
 
@@ -186,19 +170,15 @@ const validationConfig = {
   errorClass: "popup__error_visible",
 };
 
-
-const validatePopupProfile = new FormValidator (validationConfig, formProfileElement);
+const validatePopupProfile = new FormValidator(validationConfig, formProfileElement);
 validatePopupProfile.enableValidation();
 
-const validatePopupCard = new FormValidator (validationConfig, formCardElement);
+const validatePopupCard = new FormValidator(validationConfig, formCardElement);
 validatePopupCard.enableValidation();
 
-
 // --------------------------------------------------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------------------------------
-
-
