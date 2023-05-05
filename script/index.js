@@ -1,4 +1,5 @@
 import { FormValidator } from "./FormValidator.js";
+import { Card } from "./Card.js";
 
 //нодлист попапов
 const popups = document.querySelectorAll(".popup");
@@ -29,6 +30,7 @@ const popupCloseCard = cardPopup.querySelector(".popup__close-button");
 const imagePopupCloseButton = document.querySelector(".popup__close-button_position_image-popup");
 //поиск темплейта. Контейнер для темплейта
 const cardContainer = document.querySelector(".elements");
+const cardTemplateSelector = document.querySelector("#template_card");
 const cardTemplate = document.querySelector(".template").content;
 //поиск попапа image и всего что с ним связано
 const popupImage = document.querySelector(".popup__image");
@@ -69,6 +71,26 @@ const initialCards = [
     link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
   },
 ];
+
+
+const showImagePopup = function (object) {
+  popupImageHeading.textContent = object.name;
+  popupImage.alt = object.name;
+  popupImage.src = object.link;
+  openPopup(showPopupImage);
+};
+
+
+
+initialCards.forEach(element => {
+  const card = new Card(element, "#card_template", showImagePopup);
+  card.generateCard
+
+
+});
+
+
+
 
 //открытие попапа
 const openPopup = function (popup) {
@@ -134,49 +156,8 @@ profileAddButton.addEventListener("click", function () {
   validatePopupCard.resetErrors();
 });
 
-//функция создания карточки
-const createCard = function (object) {
-  const cardElement = cardTemplate.cloneNode(true);
-  const cardImage = cardElement.querySelector(".element__image");
-  const cardElementTitle = cardElement.querySelector(".element__title");
-  const cardLikeButton = cardElement.querySelector(".element__like-button");
-  const cardTrashButton = cardElement.querySelector(".element__trash-button");
 
-  cardImage.alt = object.name;
-  cardElementTitle.textContent = object.name;
-  cardImage.src = object.link;
 
-  cardImage.addEventListener("click", function () {
-    showImagePopup(object);
-  });
-
-  cardTrashButton.addEventListener("click", removeCard);
-
-  cardLikeButton.addEventListener("click", function () {
-    cardLikeButton.classList.toggle("element__like-button_active");
-  });
-
-  return cardElement;
-};
-// удаление карточек реализовано с помощью объекта event
-const removeCard = function (event) {
-  const cardToRemove = event.target.closest(".element");
-  cardToRemove.remove();
-};
-
-//наполняем страницу карточками из массива initialCards
-initialCards.forEach(function (object) {
-  const card = createCard(object);
-  cardContainer.append(card);
-});
-
-//функция открытия попапа картинки
-const showImagePopup = function (object) {
-  popupImageHeading.textContent = object.name;
-  popupImage.alt = object.name;
-  popupImage.src = object.link;
-  openPopup(showPopupImage);
-};
 
 //этот слушатель запишет значения полей ввода в объект { name, link }. Объект будет использован в prependCard.
 formCardElement.addEventListener("submit", function (event) {
@@ -191,11 +172,6 @@ formCardElement.addEventListener("submit", function (event) {
   closePopup(cardPopup);
 });
 
-//функция добавления карточки. Добавляет карточку в начало Grid контейнера, после нажатия по кнопке сабмита в попапе создания карточки.
-const prependCard = function (object) {
-  const card = createCard(object);
-  cardContainer.prepend(card);
-};
 
 
 
