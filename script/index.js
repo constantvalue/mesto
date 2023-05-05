@@ -115,10 +115,10 @@ closeButtons.forEach((button) => {
 //слушатели для отрытия, наполнения и закрытия попапа profile
 profileEditButton.addEventListener("click", function () {
   openPopup(profilePopup);
-  resetErrors(profilePopup, validationConfig);
+  validatePopupProfile.resetErrors();
   nameInput.value = profileInfoTitle.textContent;
   jobInput.value = profileInfoSubtitle.textContent;
-  toggleButtonState(popupFormProfileInputs, validationConfig, formProfileElement);
+  validatePopupProfile.resetErrors();
 });
 //Закрытие попапа profile и запись значений в верстку
 formProfileElement.addEventListener("submit", function (event) {
@@ -131,6 +131,7 @@ formProfileElement.addEventListener("submit", function (event) {
 //слушатели для открытия и закрытия попапа card
 profileAddButton.addEventListener("click", function () {
   openPopup(cardPopup);
+  validatePopupCard.resetErrors();
 });
 
 //функция создания карточки
@@ -188,7 +189,6 @@ formCardElement.addEventListener("submit", function (event) {
   prependCard(object);
   event.target.reset();
   closePopup(cardPopup);
-  toggleButtonState(popupFormCardInputs, validationConfig, formCardElement);
 });
 
 //функция добавления карточки. Добавляет карточку в начало Grid контейнера, после нажатия по кнопке сабмита в попапе создания карточки.
@@ -196,6 +196,7 @@ const prependCard = function (object) {
   const card = createCard(object);
   cardContainer.prepend(card);
 };
+
 
 
 // ---------------------------------------------VALIDATION--------------------------------------------------------------
@@ -213,8 +214,8 @@ const validationConfig = {
 const validatePopupProfile = new FormValidator (validationConfig, formProfileElement);
 validatePopupProfile.enableValidation();
 
-// const validatePopupCard = new FormValidator (validationConfig, formCardElement);
-// validatePopupCard.enableValidation();
+const validatePopupCard = new FormValidator (validationConfig, formCardElement);
+validatePopupCard.enableValidation();
 
 
 // --------------------------------------------------------------------------------------------------------------------------
