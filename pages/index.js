@@ -1,62 +1,35 @@
-import { FormValidator } from "./FormValidator.js";
-import { Card } from "./Card.js";
+//импорт классов
+import { Card } from "../components/Card.js";
+import { FormValidator } from "../components/FormValidator.js";
 
-//нодлист попапов
-const popups = document.querySelectorAll(".popup");
 
-const profileEditButton = document.querySelector(".profile__edit-button");
-const profileAddButton = document.querySelector(".profile__add-button");
-const closeButtons = document.querySelectorAll(".popup__close-button");
-//profile попап и контент
-const profilePopup = document.querySelector(".popup-profile");
-const profileInfoTitle = document.querySelector(".profile__title");
-const profileInfoSubtitle = document.querySelector(".profile__subtitle");
-//card попап
-const cardPopup = document.querySelector(".popup-card");
-// Находим форму profile в DOM (форма внутри попапа)
-const formProfileElement = document.querySelector("#profileForm");
-// Находим поля формы profile в DOM
-const nameInput = formProfileElement.querySelector("#popup-profile-input-name");
-const jobInput = formProfileElement.querySelector("#popup-profile-input-job");
-//находим форму card в DOM
-const formCardElement = document.querySelector("#cardForm");
-//поля формы card в DOM
-const titleInputCard = formCardElement.querySelector("#popup-card-title-text");
-const linkInputCard = formCardElement.querySelector("#popup-card-link-value");
-//поиск темплейта. Контейнер для темплейта
-const cardContainer = document.querySelector(".elements");
-//поиск попапа image и всего что с ним связано
-const popupImage = document.querySelector(".popup__image");
-const popupImageHeading = document.querySelector(".popup__image-heading");
-const showPopupImage = document.querySelector(".popup-image");
+//импорт всех переменных.
+import {
+  profileEditButton,
+  profileAddButton,
+  closeButtons,
+  profilePopup,
+  profileInfoTitle,
+  profileInfoSubtitle,
+  cardPopup,
+  formProfileElement,
+  nameInput,
+  jobInput,
+  formCardElement,
+  titleInputCard,
+  linkInputCard,
+  cardContainer,
+  popupImage,
+  popupImageHeading,
+  showPopupImage,
+  popups
+} from "../utils/constants.js"
 
-//объекты для создания карточек по умолчанию.
-const initialCards = [
-  {
-    name: "Архыз",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-  },
-  {
-    name: "Челябинская область",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-  },
-  {
-    name: "Иваново",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-  },
-  {
-    name: "Камчатка",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-  },
-  {
-    name: "Холмогорский район",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-  },
-  {
-    name: "Байкал",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-  },
-];
+//импорт массива объектов карточек по умолчанию
+import { initialCards } from "../utils/constants.js";
+
+//импорт объекта с "настройками" валидации
+import { validationConfig } from "../utils/constants.js";
 
 const showImagePopup = function (object) {
   popupImageHeading.textContent = object.name;
@@ -159,14 +132,7 @@ formCardElement.addEventListener("submit", function (event) {
 
 // ---------------------------------------------VALIDATION--------------------------------------------------------------
 
-const validationConfig = {
-  formSelector: ".popup__form",
-  inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__submit-button",
-  inactiveButtonClass: "popup__submit-button_disabled",
-  inputErrorClass: "popup__input_type_error",
-  errorClass: "popup__error_visible",
-};
+
 
 const validatePopupProfile = new FormValidator(validationConfig, formProfileElement);
 validatePopupProfile.enableValidation();
