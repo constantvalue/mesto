@@ -1,7 +1,7 @@
 //импорт классов
 import { Card } from "../components/Card.js";
 import { FormValidator } from "../components/FormValidator.js";
-
+import { Section } from "../components/Section.js";
 
 //импорт всех переменных.
 import {
@@ -22,8 +22,8 @@ import {
   popupImage,
   popupImageHeading,
   showPopupImage,
-  popups
-} from "../utils/constants.js"
+  popups,
+} from "../utils/constants.js";
 
 //импорт массива объектов карточек по умолчанию
 import { initialCards } from "../utils/constants.js";
@@ -38,22 +38,21 @@ const showImagePopup = function (object) {
   openPopup(showPopupImage);
 };
 
-//функция для prepend
-const prependCard = (item) => {
-  cardContainer.prepend(item);
-};
 
-function createCard(element) {
-  // тут создаете карточку и возвращаете ее
-  const card = new Card(element, "#card_template", showImagePopup);
-  const cardElement = card.generateCard();
-  return cardElement;
-}
+//генерируем карточки на странице. Создаем экземпляр класса Card, внутри создания экземпляра Section.
+const section = new Section(
+  {
+    items: initialCards,
+    renderer: (element) => {
+      const card = new Card(element, "#card_template", showImagePopup);
+      const generatedCard = card.generateCard();
+      section.addItem(generatedCard);
+    },
+  },
+  cardContainer
+);
+section.renderItems();
 
-initialCards.forEach((element) => {
-  const card = createCard(element);
-  prependCard(card);
-});
 
 //открытие попапа
 const openPopup = function (popup) {
@@ -130,10 +129,11 @@ formCardElement.addEventListener("submit", function (event) {
   closePopup(cardPopup);
 });
 
-// ---------------------------------------------VALIDATION--------------------------------------------------------------
+// ---------------------------------------------VALIDATION-------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------
 
-
-
+//создаем два экземпляра класса FormValidator
 const validatePopupProfile = new FormValidator(validationConfig, formProfileElement);
 validatePopupProfile.enableValidation();
 
