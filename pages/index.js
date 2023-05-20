@@ -2,6 +2,7 @@
 import { Card } from "../components/Card.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Section } from "../components/Section.js";
+import { Popup } from "../components/Popup.js";
 
 //импорт всех переменных.
 import {
@@ -38,6 +39,9 @@ const showImagePopup = function (object) {
   openPopup(showPopupImage);
 };
 
+const profilePopupCreate = new Popup(profilePopup);
+profilePopupCreate.setEventListeners();
+
 
 //генерируем карточки на странице. Создаем экземпляр класса Card, внутри создания экземпляра Section.
 const section = new Section(
@@ -54,48 +58,25 @@ const section = new Section(
 section.renderItems();
 
 
-//открытие попапа
-const openPopup = function (popup) {
-  popup.classList.add("popup_opened");
-  document.addEventListener("keydown", closeOnEscape);
-};
-// закрытие попапа
-const closePopup = function (popup) {
-  popup.classList.remove("popup_opened");
-  document.removeEventListener("keydown", closeOnEscape);
-};
 
-//закрытие по keydown 'escape'
-const closeOnEscape = function (evt) {
-  if (evt.key === "Escape") {
-    const openedPopup = document.querySelector(".popup_opened");
-    closePopup(openedPopup);
-  }
-};
 
-//закрытие при клики по оверлею
-//добавил условную конструкцию
-const closeByClickOnOverlay = function (evt) {
-  if (evt.currentTarget === evt.target) {
-    closePopup(evt.currentTarget);
-  }
-};
+// popups.forEach((popup) => {
+//   popup.addEventListener("mousedown", closeByClickOnOverlay);
+// });
 
-popups.forEach((popup) => {
-  popup.addEventListener("mousedown", closeByClickOnOverlay);
-});
+// //функция закрытия любого попапа с классом .popup
+// closeButtons.forEach((button) => {
+//   // находим 1 раз ближайший к крестику попап
+//   const popup = button.closest(".popup");
+//   // устанавливаем обработчик закрытия на крестик
+//   button.addEventListener("click", () => closePopup(popup));
+// });
 
-//функция закрытия любого попапа с классом .popup
-closeButtons.forEach((button) => {
-  // находим 1 раз ближайший к крестику попап
-  const popup = button.closest(".popup");
-  // устанавливаем обработчик закрытия на крестик
-  button.addEventListener("click", () => closePopup(popup));
-});
+
 
 //слушатели для отрытия, наполнения и закрытия попапа profile
 profileEditButton.addEventListener("click", function () {
-  openPopup(profilePopup);
+  profilePopupCreate.open();
   validatePopupProfile.resetErrors();
   nameInput.value = profileInfoTitle.textContent;
   jobInput.value = profileInfoSubtitle.textContent;
@@ -106,7 +87,7 @@ formProfileElement.addEventListener("submit", function (event) {
   event.preventDefault();
   profileInfoTitle.textContent = nameInput.value;
   profileInfoSubtitle.textContent = jobInput.value;
-  closePopup(profilePopup);
+  profilePopupCreate.close();
 });
 
 //слушатели для открытия и закрытия попапа card
