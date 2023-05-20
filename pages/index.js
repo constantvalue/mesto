@@ -3,6 +3,8 @@ import { Card } from "../components/Card.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Section } from "../components/Section.js";
 import { Popup } from "../components/Popup.js";
+import { PopupWithForm } from "../components/PopupWithForm.js";
+import { PopupWithImage } from "../components/PopupWithImage.js";
 
 //импорт всех переменных.
 import {
@@ -32,23 +34,17 @@ import { initialCards } from "../utils/constants.js";
 //импорт объекта с "настройками" валидации
 import { validationConfig } from "../utils/constants.js";
 
-const showImagePopup = function (object) {
-  popupImageHeading.textContent = object.name;
-  popupImage.alt = object.name;
-  popupImage.src = object.link;
-  openPopup(showPopupImage);
-};
+const createPopupImage = new PopupWithImage(showPopupImage);
+createPopupImage.setEventListeners();
 
-const profilePopupCreate = new Popup(profilePopup);
-profilePopupCreate.setEventListeners();
-
+const profilePopupCreate = new PopupWithForm(profilePopup);
 
 //генерируем карточки на странице. Создаем экземпляр класса Card, внутри создания экземпляра Section.
 const section = new Section(
   {
     items: initialCards,
     renderer: (element) => {
-      const card = new Card(element, "#card_template", showImagePopup);
+      const card = new Card(element, "#card_template", createPopupImage.open);
       const generatedCard = card.generateCard();
       section.addItem(generatedCard);
     },
@@ -56,23 +52,6 @@ const section = new Section(
   cardContainer
 );
 section.renderItems();
-
-
-
-
-// popups.forEach((popup) => {
-//   popup.addEventListener("mousedown", closeByClickOnOverlay);
-// });
-
-// //функция закрытия любого попапа с классом .popup
-// closeButtons.forEach((button) => {
-//   // находим 1 раз ближайший к крестику попап
-//   const popup = button.closest(".popup");
-//   // устанавливаем обработчик закрытия на крестик
-//   button.addEventListener("click", () => closePopup(popup));
-// });
-
-
 
 //слушатели для отрытия, наполнения и закрытия попапа profile
 profileEditButton.addEventListener("click", function () {

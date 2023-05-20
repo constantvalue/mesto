@@ -26,9 +26,9 @@ export class Card {
   }
 
   //создадим приватный метод из функции, которую передали в конструктор в качестве аргумента.
-  _showImageOnClick() {
+  _showImageOnClick = () => {
     this._showImagePopup(this._initialCards);
-  }
+  };
 
   _deleteCard() {
     this._element.remove();
