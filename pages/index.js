@@ -2,7 +2,6 @@
 import { Card } from "../components/Card.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Section } from "../components/Section.js";
-import { Popup } from "../components/Popup.js";
 import { PopupWithForm } from "../components/PopupWithForm.js";
 import { PopupWithImage } from "../components/PopupWithImage.js";
 import { UserInfo } from "../components/UserInfo.js";
@@ -36,14 +35,17 @@ import { initialCards } from "../utils/constants.js";
 //импорт объекта с "настройками" валидации
 import { validationConfig } from "../utils/constants.js";
 
+// --------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------
+
 const createUserInfo = new UserInfo(userInfoObj);
 
 const profilePopupCreate = new PopupWithForm(profilePopup, (data) => {
   createUserInfo.setUserInfo(data);
 });
 profilePopupCreate.setEventListeners();
-
-
 
 const createPopupImage = new PopupWithImage(showPopupImage);
 createPopupImage.setEventListeners();
@@ -53,29 +55,30 @@ const handleCardClick = (cardData) => {
   createPopupImage.open(cardData);
 };
 
-//генерируем карточки на странице. Создаем экземпляр класса Card, внутри создания экземпляра Section.
+// эта функция послужит рендерером для Section.
+const createCard = (element) => {
+  const card = new Card(element, "#card_template", handleCardClick);
+  const generatedCard = card.generateCard();
+  section.addItem(generatedCard);
+};
+
+//генерируем карточки на странице.
 const section = new Section(
   {
     items: initialCards,
-    renderer: (element) => {
-      const card = new Card(element, "#card_template", handleCardClick);
-      const generatedCard = card.generateCard();
-      section.addItem(generatedCard);
-    },
+    renderer: createCard,
   },
   cardContainer
 );
 section.renderItems();
 
-
+//создаем экземпляр класса попапа Card.
 const cardPopupCreate = new PopupWithForm(cardPopup, (data) => {
-  const card = new Card(data, "#card_template", handleCardClick);
-  const generatedCard = card.generateCard();
-  section.addItem(generatedCard);
+  createCard(data);
 });
 cardPopupCreate.setEventListeners();
 
-//слушатели для отрытия, наполнения и закрытия попапа profile
+//слушатель попапа Profile. Открываем и записываем значения. Сбрасываем ошибки валидации.
 profileEditButton.addEventListener("click", function () {
   profilePopupCreate.open();
   const collectUserInfo = createUserInfo.getUserInfo();
@@ -84,33 +87,11 @@ profileEditButton.addEventListener("click", function () {
   validatePopupProfile.resetErrors();
 });
 
-//Закрытие попапа profile и запись значений в верстку
-// formProfileElement.addEventListener("submit", function (event) {
-//   event.preventDefault();
-//   profileInfoTitle.textContent = nameInput.value;
-//   profileInfoSubtitle.textContent = jobInput.value;
-//   profilePopupCreate.close();
-// });
-
-//слушатели для открытия и закрытия попапа card
+//Слушатель для кнопки добавления (попап Card)
 profileAddButton.addEventListener("click", function () {
   cardPopupCreate.open();
   validatePopupCard.resetErrors();
 });
-
-// //этот слушатель запишет значения полей ввода в объект { name, link }. Объект будет использован в prependCard.
-// formCardElement.addEventListener("submit", function (event) {
-//   event.preventDefault();
-//   //создаю объект, который буду передавать в функцию prependCard
-//   const object = {
-//     name: titleInputCard.value,
-//     link: linkInputCard.value,
-//   };
-//   const newCard = createCard(object);
-//   prependCard(newCard);
-//   event.target.reset();
-//   closePopup(cardPopup);
-// });
 
 // ---------------------------------------------VALIDATION-------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------------------------------
