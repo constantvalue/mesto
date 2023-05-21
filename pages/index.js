@@ -43,10 +43,7 @@ const profilePopupCreate = new PopupWithForm(profilePopup, (data) => {
 });
 profilePopupCreate.setEventListeners();
 
-const cardPopupCreate = new PopupWithForm(cardPopup, (data) => {
-  section.addItem(data);
-});
-cardPopupCreate.setEventListeners();
+
 
 const createPopupImage = new PopupWithImage(showPopupImage);
 createPopupImage.setEventListeners();
@@ -69,6 +66,14 @@ const section = new Section(
   cardContainer
 );
 section.renderItems();
+
+
+const cardPopupCreate = new PopupWithForm(cardPopup, (data) => {
+  const card = new Card(data, "#card_template", handleCardClick);
+  const generatedCard = card.generateCard();
+  section.addItem(generatedCard);
+});
+cardPopupCreate.setEventListeners();
 
 //слушатели для отрытия, наполнения и закрытия попапа profile
 profileEditButton.addEventListener("click", function () {
