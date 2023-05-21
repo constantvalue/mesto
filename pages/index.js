@@ -5,9 +5,11 @@ import { Section } from "../components/Section.js";
 import { Popup } from "../components/Popup.js";
 import { PopupWithForm } from "../components/PopupWithForm.js";
 import { PopupWithImage } from "../components/PopupWithImage.js";
+import { UserInfo } from "../components/UserInfo.js";
 
 //импорт всех переменных.
 import {
+  userInfoObj,
   profileEditButton,
   profileAddButton,
   closeButtons,
@@ -34,17 +36,32 @@ import { initialCards } from "../utils/constants.js";
 //импорт объекта с "настройками" валидации
 import { validationConfig } from "../utils/constants.js";
 
+const createUserInfo = new UserInfo(userInfoObj);
+
+const profilePopupCreate = new PopupWithForm(profilePopup, (data) => {
+  createUserInfo.setUserInfo(data);
+});
+profilePopupCreate.setEventListeners();
+
+const cardPopupCreate = new PopupWithForm(cardPopup, (data) => {
+  section.addItem(data);
+});
+cardPopupCreate.setEventListeners();
+
 const createPopupImage = new PopupWithImage(showPopupImage);
 createPopupImage.setEventListeners();
 
-const profilePopupCreate = new PopupWithForm(profilePopup);
+//функция открытия картинки. Используем метод .open экземпляра класса PopupWithImage
+const handleCardClick = (cardData) => {
+  createPopupImage.open(cardData);
+};
 
 //генерируем карточки на странице. Создаем экземпляр класса Card, внутри создания экземпляра Section.
 const section = new Section(
   {
     items: initialCards,
     renderer: (element) => {
-      const card = new Card(element, "#card_template", createPopupImage.open);
+      const card = new Card(element, "#card_template", handleCardClick);
       const generatedCard = card.generateCard();
       section.addItem(generatedCard);
     },
@@ -56,38 +73,39 @@ section.renderItems();
 //слушатели для отрытия, наполнения и закрытия попапа profile
 profileEditButton.addEventListener("click", function () {
   profilePopupCreate.open();
-  validatePopupProfile.resetErrors();
-  nameInput.value = profileInfoTitle.textContent;
-  jobInput.value = profileInfoSubtitle.textContent;
+  const collectUserInfo = createUserInfo.getUserInfo();
+  nameInput.value = collectUserInfo.name;
+  jobInput.value = collectUserInfo.job;
   validatePopupProfile.resetErrors();
 });
+
 //Закрытие попапа profile и запись значений в верстку
-formProfileElement.addEventListener("submit", function (event) {
-  event.preventDefault();
-  profileInfoTitle.textContent = nameInput.value;
-  profileInfoSubtitle.textContent = jobInput.value;
-  profilePopupCreate.close();
-});
+// formProfileElement.addEventListener("submit", function (event) {
+//   event.preventDefault();
+//   profileInfoTitle.textContent = nameInput.value;
+//   profileInfoSubtitle.textContent = jobInput.value;
+//   profilePopupCreate.close();
+// });
 
 //слушатели для открытия и закрытия попапа card
 profileAddButton.addEventListener("click", function () {
-  openPopup(cardPopup);
+  cardPopupCreate.open();
   validatePopupCard.resetErrors();
 });
 
-//этот слушатель запишет значения полей ввода в объект { name, link }. Объект будет использован в prependCard.
-formCardElement.addEventListener("submit", function (event) {
-  event.preventDefault();
-  //создаю объект, который буду передавать в функцию prependCard
-  const object = {
-    name: titleInputCard.value,
-    link: linkInputCard.value,
-  };
-  const newCard = createCard(object);
-  prependCard(newCard);
-  event.target.reset();
-  closePopup(cardPopup);
-});
+// //этот слушатель запишет значения полей ввода в объект { name, link }. Объект будет использован в prependCard.
+// formCardElement.addEventListener("submit", function (event) {
+//   event.preventDefault();
+//   //создаю объект, который буду передавать в функцию prependCard
+//   const object = {
+//     name: titleInputCard.value,
+//     link: linkInputCard.value,
+//   };
+//   const newCard = createCard(object);
+//   prependCard(newCard);
+//   event.target.reset();
+//   closePopup(cardPopup);
+// });
 
 // ---------------------------------------------VALIDATION-------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------------------------------

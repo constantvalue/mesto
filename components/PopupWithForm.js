@@ -13,11 +13,22 @@ export class PopupWithForm extends Popup {
     const values = {};
     this._formInputs.forEach((input) => {
       values[input.name] = input.value;
+      console.log(values)
     });
     return values;
   }
 
   setEventListeners() {
     super.setEventListeners();
+    this._form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      this._submit(this._getInputValues())
+      this.close();
+    });
+  }
+
+  close() {
+    super.close();
+    this._form.reset();
   }
 }
