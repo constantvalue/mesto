@@ -3,11 +3,11 @@ export  class FormValidator {
     this._formSelector = formSelector;
     this._config = config;
     this._submitButton = this._formSelector.querySelector(this._config.submitButtonSelector);
+    this._formInputs = Array.from(this._formSelector.querySelectorAll(this._config.inputSelector));
   }
 
   // публичный метод для включения валидации
   enableValidation() {
-    this._formInputs = Array.from(this._formSelector.querySelectorAll(this._config.inputSelector));
     this._setEventListeners();
   }
 

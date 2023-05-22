@@ -62,11 +62,11 @@ export const linkInputCard = formCardElement.querySelector("#popup-card-link-val
 //поиск темплейта. Контейнер для темплейта
 export const cardContainer = document.querySelector(".elements");
 //поиск попапа image и всего что с ним связано
-export const popupImage = document.querySelector(".popup__image");
+// export const popupImage = document.querySelector(".popup__image");
 export const popupImageHeading = document.querySelector(".popup__image-heading");
 export const showPopupImage = document.querySelector(".popup-image");
 //нодлист попапов
-export const popups = document.querySelectorAll(".popup");
+export const popupSelector = document.querySelectorAll(".popup");
 
 //объект для создания экземпляра класса UserInfo
 export const userInfoObj = {
