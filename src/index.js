@@ -1,10 +1,11 @@
+import './pages/index.css'
 //импорт классов
-import { Card } from "../components/Card.js";
-import { FormValidator } from "../components/FormValidator.js";
-import { Section } from "../components/Section.js";
-import { PopupWithForm } from "../components/PopupWithForm.js";
-import { PopupWithImage } from "../components/PopupWithImage.js";
-import { UserInfo } from "../components/UserInfo.js";
+import { Card } from "./components/Card.js";
+import { FormValidator } from "./components/FormValidator.js";
+import { Section } from "./components/Section.js";
+import { PopupWithForm } from "./components/PopupWithForm.js";
+import { PopupWithImage } from "./components/PopupWithImage.js";
+import { UserInfo } from "./components/UserInfo.js";
 
 //импорт всех переменных.
 import {
@@ -27,13 +28,13 @@ import {
   popupImageHeading,
   showPopupImage,
   popups,
-} from "../utils/constants.js";
+} from "./utils/constants.js";
 
 //импорт массива объектов карточек по умолчанию
-import { initialCards } from "../utils/constants.js";
+import { initialCards } from "./utils/constants.js";
 
 //импорт объекта с "настройками" валидации
-import { validationConfig } from "../utils/constants.js";
+import { validationConfig } from "./utils/constants.js";
 
 // --------------------------------------------------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------------------------------
@@ -110,3 +111,4 @@ validatePopupCard.enableValidation();
 // --------------------------------------------------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------------------------------
+
