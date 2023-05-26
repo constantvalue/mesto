@@ -1,8 +1,9 @@
 export class Card {
-  constructor(initialCard, cardTemplateSelector, showImagePopup) {
+  constructor(initialCard, cardTemplateSelector, showImagePopup, handleDeleteCard) {
     this._initialCard = initialCard;
     this._cardTemplateSelector = cardTemplateSelector;
     this._showImagePopup = showImagePopup;
+    this._handleDeleteCard = handleDeleteCard;
   }
 
   _getTemplate() {
@@ -15,7 +16,7 @@ export class Card {
   generateCard() {
     //клонируем темплейт для перезаписи значений
     this._element = this._getTemplate();
-    this._buttonLike = this._element.querySelector('.element__like-button')
+    this._buttonLike = this._element.querySelector(".element__like-button");
     this._image = this._element.querySelector(".element__image");
     this._image.alt = this._initialCard.name;
     this._image.src = this._initialCard.link;
@@ -37,7 +38,7 @@ export class Card {
   }
 
   _toggleLike() {
-    this._buttonLike.classList.toggle("element__like-button_active")
+    this._buttonLike.classList.toggle("element__like-button_active");
   }
 
   //навешиваем слушатели на все возможные события внутри карточки.

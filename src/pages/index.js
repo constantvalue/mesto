@@ -6,6 +6,7 @@ import { Section } from "../components/Section.js";
 import { PopupWithForm } from "../components/PopupWithForm.js";
 import { PopupWithImage } from "../components/PopupWithImage.js";
 import { UserInfo } from "../components/UserInfo.js";
+import { Api } from "../components/Api.js";
 
 //импорт всех переменных.
 import { userInfoObj, profileEditButton, profileAddButton, formProfileElement, formCardElement, cardContainer, avatarPopupButton, profileAvatarImage, formAvatarElement } from "../utils/constants.js";
@@ -19,12 +20,27 @@ import { validationConfig } from "../utils/constants.js";
 // --------------------------------------------------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------------------------------
 
+const api = new Api({
+  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-66",
+  headers: {
+    authorization: "37444284-40d0-47c4-870b-23d568f81278",
+    "Content-Type": "application/json",
+  },
+});
+
+api.getCardsData().then((res) => console.log(res));
+
 const userInfo = new UserInfo(userInfoObj);
 
 const profilePopupCreate = new PopupWithForm(".popup-profile", (data) => {
   userInfo.setUserInfo(data);
 });
 profilePopupCreate.setEventListeners();
+
+// const popupDeleteConfirm = new PopupWithForm(".popup-delete", (data) => {
+
+// })
+// popupDeleteConfirm.setEventListeners();
 
 const popupImage = new PopupWithImage(".popup-image");
 popupImage.setEventListeners();
@@ -44,12 +60,10 @@ const createCard = (element) => {
 //генерируем карточки на странице.
 const section = new Section(
   {
-    items: initialCards,
     renderer: createCard,
   },
   cardContainer
 );
-section.renderItems();
 
 //создаем экземпляр класса попапа Card.
 const cardPopupCreate = new PopupWithForm(".popup-card", (cardData) => {
@@ -72,7 +86,7 @@ profileAddButton.addEventListener("click", function () {
 
 // ---------------------------------------------VALIDATION-------------------------------------------------------------------
 
-//создаем два экземпляра класса FormValidator
+//создаем включаем валидацию на формах.
 const popupProfileValidator = new FormValidator(validationConfig, formProfileElement);
 popupProfileValidator.enableValidation();
 
@@ -82,12 +96,18 @@ popupCardValidator.enableValidation();
 const popupAvatarValidator = new FormValidator(validationConfig, formAvatarElement);
 popupAvatarValidator.enableValidation();
 
-
-
-avatarPopupButton.addEventListener("click", () => avatarPopupCreate.open())
+// навешиваем слушатели и создаем экземпляр попапа для смены аватарки
+avatarPopupButton.addEventListener("click", () => avatarPopupCreate.open());
 
 const avatarPopupCreate = new PopupWithForm(".popup-avatar", (inputData) => {
   profileAvatarImage.src = inputData.avatar;
-})
+});
 avatarPopupCreate.setEventListeners();
 
+// --------------------------------------------------------------------------
+
+Promise.all([api.getUserData(), api.getCardsData()]).then((res) => {
+  const [userData, cardData] = res;
+  userInfo.setUserInfo({ name: userData.name, job: userData.about, avatar: userData.avatar });
+  section.renderItems(cardData);
+});

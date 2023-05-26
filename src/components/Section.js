@@ -1,6 +1,6 @@
 export class Section {
-  constructor({ items, renderer }, containerSelector) {
-    this._items = items;
+  //items теперь не нужен. Карточки получаем от сервера.
+  constructor({ renderer }, containerSelector) {
     this._renderer = renderer;
     this._containerSelector = containerSelector;
   }
@@ -11,8 +11,8 @@ export class Section {
     this._containerSelector.prepend(item);
   }
 
-  renderItems() {
-    this._items.forEach((item) => {
+  renderItems(card) {
+    card.forEach((item) => {
       this._renderer(item);
     });
   }

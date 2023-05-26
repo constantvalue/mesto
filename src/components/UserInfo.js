@@ -3,6 +3,7 @@ export class UserInfo {
   constructor(userInfoObj) {
     this._username = userInfoObj.name;
     this._description = userInfoObj.job;
+    this._avatar = userInfoObj.avatar;
   }
 
   getUserInfo() {
@@ -16,5 +17,6 @@ export class UserInfo {
   setUserInfo(userData) {
     this._username.textContent = userData.name;
     this._description.textContent = userData.job;
+    this._avatar.src = userData.avatar;
   }
 }

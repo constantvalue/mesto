@@ -68,14 +68,14 @@ export const showPopupImage = document.querySelector(".popup-image");
 //нодлист попапов
 export const popupSelector = document.querySelectorAll(".popup");
 
-//объект для создания экземпляра класса UserInfo
-export const userInfoObj = {
-  name: profileInfoTitle,
-  job: profileInfoSubtitle,
-};
-
-
 export const avatarPopupButton = document.querySelector(".profile__avatar-button");
 export const profileAvatarImage = document.querySelector(".profile__avatar");
 
 export const formAvatarElement = document.querySelector("#avatarForm");
+
+//объект для создания экземпляра класса UserInfo
+export const userInfoObj = {
+  name: profileInfoTitle,
+  job: profileInfoSubtitle,
+  avatar: profileAvatarImage
+};

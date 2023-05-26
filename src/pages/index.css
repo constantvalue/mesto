@@ -50,3 +50,4 @@
 @import url(../blocks/profile/__avatar-container/profile__avatar-container.css);
 @import url(../blocks/profile/__avatar-button/profile__avatar-button.css);
 
+@import url(../blocks/popup/__heading/_place/popup__heading_place_delete.css);
