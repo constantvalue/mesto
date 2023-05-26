@@ -8,7 +8,7 @@ import { PopupWithImage } from "../components/PopupWithImage.js";
 import { UserInfo } from "../components/UserInfo.js";
 
 //импорт всех переменных.
-import { userInfoObj, profileEditButton, profileAddButton, formProfileElement, formCardElement, cardContainer } from "../utils/constants.js";
+import { userInfoObj, profileEditButton, profileAddButton, formProfileElement, formCardElement, cardContainer, avatarPopupButton, profileAvatarImage, formAvatarElement } from "../utils/constants.js";
 
 //импорт массива объектов карточек по умолчанию
 import { initialCards } from "../utils/constants.js";
@@ -78,3 +78,16 @@ popupProfileValidator.enableValidation();
 
 const popupCardValidator = new FormValidator(validationConfig, formCardElement);
 popupCardValidator.enableValidation();
+
+const popupAvatarValidator = new FormValidator(validationConfig, formAvatarElement);
+popupAvatarValidator.enableValidation();
+
+
+
+avatarPopupButton.addEventListener("click", () => avatarPopupCreate.open())
+
+const avatarPopupCreate = new PopupWithForm(".popup-avatar", (inputData) => {
+  profileAvatarImage.src = inputData.avatar;
+})
+avatarPopupCreate.setEventListeners();
+

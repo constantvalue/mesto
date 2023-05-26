@@ -17,7 +17,7 @@
     <section class="profile">
       <div class="profile__info">
         <div class="profile__avatar-container">
-          <img class="profile__avatar" src="<%=require('./images/profile__avatar.svg')%>" alt="Аватар">
+          <img class="profile__avatar"  src="<%=require('./images/profile__avatar.svg')%>" alt="Аватар">
           <button class="profile__avatar-button" type="button"></button>
         </div>
         <h2 class="profile__title">Жак-Ив Кусто</h2>
@@ -96,7 +96,7 @@
 
   <!-- попап удаления карточки с подтверждением -->
   <div class="popup popup-delete">
-    <form class="popup__form" name="profileForm" id="profileForm" novalidate>
+    <form class="popup__form" name="popupDeleteForm" id="popupDeleteForm" novalidate>
       <h2 class="popup__heading">Вы уверены?</h2>
       <button class="popup__submit-button" type="submit" aria-label="кнопка сохранить">Да</button>
       <button class="popup__close-button" type="button" aria-label="кнопка закрыть окно"></button>
@@ -104,13 +104,13 @@
   </div>
 
   <!-- попап обновления аватара -->
-  <div class="popup popup-profile">
-    <form class="popup__form" name="profileForm" id="profileForm" novalidate>
+  <div class="popup popup-avatar">
+    <form class="popup__form" name="avatarForm" id="avatarForm" novalidate>
       <h2 class="popup__heading">Обновить аватар</h2>
       <div class="popup__input-container">
-        <input class="popup__input" type="text" id="popup-profile-input-name" name="name" minlength="2" maxlength="40"
-          required>
-        <span class="popup-profile-input-name-error"></span>
+        <input class="popup__input" type="url" id="popup-avatar-input-name" name="avatar" minlength="2"
+          required placeholder="Ссылка на картинку">
+        <span class="popup-avatar-input-name-error"></span>
       </div>
       <button class="popup__submit-button" type="submit" aria-label="кнопка сохранить">Сохранить</button>
       <button class="popup__close-button" type="button" aria-label="кнопка закрыть окно"></button>
