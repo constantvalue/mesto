@@ -25,15 +25,19 @@ const api = new Api({
   },
 });
 
-Promise.all([api.getUserData(), api.getInitialCards()]).then((res) => {
-  const [userData, cardData] = res;
-  cardData.forEach((item) => {
-    item.myId = userData._id;
+Promise.all([api.getUserData(), api.getInitialCards()])
+  .then((res) => {
+    const [userData, cardData] = res;
+    userInfo.setId(userData._id);
+    userInfo.setUserInfo(userData);
+    cardData.forEach((item) => {
+      item.myId = userData._id;
+    });
+    section.renderItems(cardData);
+  })
+  .catch((error) => {
+    console.log(error);
   });
-  userInfo.setUserInfo({ name: userData.name, job: userData.about, avatar: userData.avatar });
-  section.renderItems(cardData);
-});
-
 
 const userInfo = new UserInfo(userInfoObj);
 
@@ -41,13 +45,29 @@ const profilePopupCreate = new PopupWithForm(".popup-profile", (data) => {
   api
     .userInfoPatch(data)
     .then((res) => {
-      userInfo.setUserInfo({ name: res.name, job: res.about, avatar: res.avatar });
+      userInfo.setUserInfo(res);
     })
     .catch((error) => {
       console.log(error);
     });
 });
 profilePopupCreate.setEventListeners();
+
+// навешиваем слушатели и создаем экземпляр попапа для смены аватарки
+avatarPopupButton.addEventListener("click", () => avatarPopupCreate.open());
+
+const avatarPopupCreate = new PopupWithForm(".popup-avatar", (inputData) => {
+  api
+    .updateAvatar(inputData)
+    .then((res) => {
+      userInfo.setUserInfo(res);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+avatarPopupCreate.setEventListeners();
 
 const popupImage = new PopupWithImage(".popup-image");
 popupImage.setEventListeners();
@@ -74,7 +94,16 @@ const section = new Section(
 
 //создаем экземпляр класса попапа Card.
 const cardPopupCreate = new PopupWithForm(".popup-card", (cardData) => {
-  createCard(cardData);
+  api
+    .addCardFromJSON(cardData)
+    .then((data) => {
+      data._myId = userInfo.getId();
+      createCard(data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  // createCard(cardData);
 });
 cardPopupCreate.setEventListeners();
 
@@ -103,13 +132,6 @@ popupCardValidator.enableValidation();
 const popupAvatarValidator = new FormValidator(validationConfig, formAvatarElement);
 popupAvatarValidator.enableValidation();
 
-// навешиваем слушатели и создаем экземпляр попапа для смены аватарки
-avatarPopupButton.addEventListener("click", () => avatarPopupCreate.open());
 
-const avatarPopupCreate = new PopupWithForm(".popup-avatar", (inputData) => {
-  profileAvatarImage.src = inputData.avatar;
-});
-avatarPopupCreate.setEventListeners();
 
 // --------------------------------------------------------------------------
-

@@ -7,11 +7,8 @@
   margin: 0 auto;
 }
 
-.profile__avatar-container:hover {
-  cursor: pointer;
-}
-
 .profile__avatar-container:hover::before {
+  cursor: pointer;
   content: "";
   position: absolute;
   border-radius: 50%;

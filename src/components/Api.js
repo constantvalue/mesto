@@ -30,7 +30,27 @@ export class Api {
         name: data.name,
         about: data.job,
       }),
-    })
-      .then(this._returnResponse);
+    }).then(this._returnResponse);
+  }
+
+  updateAvatar(data) {
+    return fetch(this._baseUrl + "/users/me/avatar", {
+      headers: this._headers,
+      method: "PATCH",
+      body: JSON.stringify({
+        avatar: data.avatar,
+      }),
+    }).then(this._returnResponse);
+  }
+
+  addCardFromJSON(data) {
+    return fetch(this._baseUrl + "/cards", {
+      headers: this._headers,
+      method: "POST",
+      body: JSON.stringify({
+        name: data.name,
+        link: data.link,
+      }),
+    }).then(this._returnResponse);
   }
 }

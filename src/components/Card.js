@@ -30,19 +30,17 @@ export class Card {
     return this._element;
   }
 
-    //условная конструкция, проверяющая совпадение айдишников (мой айдишник, который я записываю с помощью метода forEach в Promise.all и айдишник из массива карточек сервера)
-    _isTrashButtonVisible() {
-      if (this._myId === this._ownerId) {
-        this._element.querySelector(".element__trash-button").classList.add('element___trash-button_visibility_visible')
-      }
+  //условная конструкция, проверяющая совпадение айдишников (мой айдишник, который я записываю с помощью метода forEach в Promise.all и айдишник из массива карточек сервера)
+  _isTrashButtonVisible() {
+    if (this._myId === this._ownerId) {
+      this._element.querySelector(".element__trash-button").classList.add("element___trash-button_visibility_visible");
     }
-
+  }
 
   //создадим приватный метод из функции, которую передали в конструктор в качестве аргумента.
   _showImageOnClick = () => {
     this._showImagePopup(this._initialCard);
   };
-
 
   _deleteCard() {
     this._element.remove();
