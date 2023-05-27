@@ -11,8 +11,10 @@ export class Section {
     this._containerSelector.prepend(item);
   }
 
+
+  //перевернули массив карточек при рендере с помощью метода reverse
   renderItems(card) {
-    card.forEach((item) => {
+    card.reverse().forEach((item) => {
       this._renderer(item);
     });
   }

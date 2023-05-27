@@ -11,9 +11,6 @@ import { Api } from "../components/Api.js";
 //импорт всех переменных.
 import { userInfoObj, profileEditButton, profileAddButton, formProfileElement, formCardElement, cardContainer, avatarPopupButton, profileAvatarImage, formAvatarElement } from "../utils/constants.js";
 
-//импорт массива объектов карточек по умолчанию
-import { initialCards } from "../utils/constants.js";
-
 //импорт объекта с "настройками" валидации
 import { validationConfig } from "../utils/constants.js";
 
@@ -28,19 +25,29 @@ const api = new Api({
   },
 });
 
-api.getCardsData().then((res) => console.log(res));
+Promise.all([api.getUserData(), api.getInitialCards()]).then((res) => {
+  const [userData, cardData] = res;
+  cardData.forEach((item) => {
+    item.myId = userData._id;
+  });
+  userInfo.setUserInfo({ name: userData.name, job: userData.about, avatar: userData.avatar });
+  section.renderItems(cardData);
+});
+
 
 const userInfo = new UserInfo(userInfoObj);
 
 const profilePopupCreate = new PopupWithForm(".popup-profile", (data) => {
-  userInfo.setUserInfo(data);
+  api
+    .userInfoPatch(data)
+    .then((res) => {
+      userInfo.setUserInfo({ name: res.name, job: res.about, avatar: res.avatar });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 profilePopupCreate.setEventListeners();
-
-// const popupDeleteConfirm = new PopupWithForm(".popup-delete", (data) => {
-
-// })
-// popupDeleteConfirm.setEventListeners();
 
 const popupImage = new PopupWithImage(".popup-image");
 popupImage.setEventListeners();
@@ -106,8 +113,3 @@ avatarPopupCreate.setEventListeners();
 
 // --------------------------------------------------------------------------
 
-Promise.all([api.getUserData(), api.getCardsData()]).then((res) => {
-  const [userData, cardData] = res;
-  userInfo.setUserInfo({ name: userData.name, job: userData.about, avatar: userData.avatar });
-  section.renderItems(cardData);
-});

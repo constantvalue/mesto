@@ -51,3 +51,5 @@
 @import url(../blocks/profile/__avatar-button/profile__avatar-button.css);
 
 @import url(../blocks/popup/__heading/_place/popup__heading_place_delete.css);
+
+@import url(../blocks/element/__trash-button/_visibility/element___trash-button_visibility_visible.css);
