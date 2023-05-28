@@ -43,7 +43,7 @@ export class Api {
     }).then(this._returnResponse);
   }
 
-  addCardFromJSON(data) {
+  addCardOnServer(data) {
     return fetch(this._baseUrl + "/cards", {
       headers: this._headers,
       method: "POST",
@@ -51,6 +51,13 @@ export class Api {
         name: data.name,
         link: data.link,
       }),
+    }).then(this._returnResponse);
+  }
+
+  cardDelete(card) {
+    return fetch(this._baseUrl + "/cards/" + card._cardId, {
+      headers: this._headers,
+      method: "DELETE",
     }).then(this._returnResponse);
   }
 }

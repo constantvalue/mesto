@@ -53,3 +53,5 @@
 @import url(../blocks/popup/__heading/_place/popup__heading_place_delete.css);
 
 @import url(../blocks/element/__trash-button/_visibility/element___trash-button_visibility_visible.css);
+@import url(../blocks/element/__like-button-container/element__like-button-container.css);
+

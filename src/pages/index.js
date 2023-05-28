@@ -7,6 +7,7 @@ import { PopupWithForm } from "../components/PopupWithForm.js";
 import { PopupWithImage } from "../components/PopupWithImage.js";
 import { UserInfo } from "../components/UserInfo.js";
 import { Api } from "../components/Api.js";
+import { PopupWithDeleteButton } from "../components/PopupWithDeleteButton.js";
 
 //импорт всех переменных.
 import { userInfoObj, profileEditButton, profileAddButton, formProfileElement, formCardElement, cardContainer, avatarPopupButton, profileAvatarImage, formAvatarElement } from "../utils/constants.js";
@@ -31,6 +32,9 @@ Promise.all([api.getUserData(), api.getInitialCards()])
     userInfo.setId(userData._id);
     userInfo.setUserInfo(userData);
     cardData.forEach((item) => {
+        //на каждой итерации создадим поле myId в объекте карточки. В значение записываем мой айдишник.
+        //это будет использовано для метода лайков.
+        //также это используется для условной конструкции, которая проверяет необходимость отрисовки на карточке иконки урны.
       item.myId = userData._id;
     });
     section.renderItems(cardData);
@@ -38,6 +42,9 @@ Promise.all([api.getUserData(), api.getInitialCards()])
   .catch((error) => {
     console.log(error);
   });
+
+const popupWithDelete = new PopupWithDeleteButton(".popup-delete");
+popupWithDelete.setEventListeners();
 
 const userInfo = new UserInfo(userInfoObj);
 
@@ -77,9 +84,21 @@ const handleCardClick = (cardData) => {
   popupImage.open(cardData);
 };
 
-// эта функция послужит рендерером для Section.
 const createCard = (element) => {
-  const card = new Card(element, "#card_template", handleCardClick);
+  const card = new Card(element, "#card_template", handleCardClick, (element) => {
+    //Это функция коллбек сабмита попапа удаления карточки.
+    popupWithDelete.open();
+    popupWithDelete.setSubmitAction(() => {
+      api
+        .cardDelete(element)
+        .then(() => {
+          card.removeCard();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  });
   const generatedCard = card.generateCard();
   section.addItem(generatedCard);
 };
@@ -95,15 +114,14 @@ const section = new Section(
 //создаем экземпляр класса попапа Card.
 const cardPopupCreate = new PopupWithForm(".popup-card", (cardData) => {
   api
-    .addCardFromJSON(cardData)
+    .addCardOnServer(cardData)
     .then((data) => {
-      data._myId = userInfo.getId();
+      data.myId = userInfo.getId();
       createCard(data);
     })
     .catch((error) => {
       console.log(error);
     });
-  // createCard(cardData);
 });
 cardPopupCreate.setEventListeners();
 
@@ -131,7 +149,5 @@ popupCardValidator.enableValidation();
 
 const popupAvatarValidator = new FormValidator(validationConfig, formAvatarElement);
 popupAvatarValidator.enableValidation();
-
-
 
 // --------------------------------------------------------------------------

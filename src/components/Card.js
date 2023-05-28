@@ -1,11 +1,12 @@
 export class Card {
-  constructor(initialCard, cardTemplateSelector, showImagePopup, handleDeleteCard) {
+  constructor(initialCard, cardTemplateSelector, showImagePopup, cardDeleteCallback) {
     this._myId = initialCard.myId;
+    this._cardId = initialCard._id;
     this._ownerId = initialCard.owner._id;
     this._initialCard = initialCard;
     this._cardTemplateSelector = cardTemplateSelector;
     this._showImagePopup = showImagePopup;
-    this._handleDeleteCard = handleDeleteCard;
+    this._cardDeleteCallback = cardDeleteCallback;
   }
 
   _getTemplate() {
@@ -24,8 +25,8 @@ export class Card {
     this._image.src = this._initialCard.link;
     this._element.querySelector(".element__title").textContent = this._initialCard.name;
     //навешиваем слушатели с помощью приватного метода.
-    this._setEventListeners();
     this._isTrashButtonVisible();
+    this._setEventListeners();
     //возвращаем ноду с новыми значениями.
     return this._element;
   }
@@ -42,7 +43,8 @@ export class Card {
     this._showImagePopup(this._initialCard);
   };
 
-  _deleteCard() {
+  //Метод переименовал чтобы не путать с Api.cardDelete()
+  removeCard() {
     this._element.remove();
     this._element = null;
   }
@@ -55,7 +57,7 @@ export class Card {
   _setEventListeners() {
     this._image.addEventListener("click", () => this._showImageOnClick());
 
-    this._element.querySelector(".element__trash-button").addEventListener("click", () => this._deleteCard());
+    this._element.querySelector(".element__trash-button").addEventListener("click", () => this._cardDeleteCallback(this));
 
     this._element.querySelector(".element__like-button").addEventListener("click", () => this._toggleLike());
   }
