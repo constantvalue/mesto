@@ -6,7 +6,6 @@ export class PopupWithDeleteButton extends Popup {
   constructor(popupSelector) {
     super(popupSelector);
     this._form = this._popupSelector.querySelector(".popup__form");
-    this._submitButton = this._form.querySelector("popup__submit-button");
   }
 
   setEventListeners() {

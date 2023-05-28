@@ -10,7 +10,7 @@ import { Api } from "../components/Api.js";
 import { PopupWithDeleteButton } from "../components/PopupWithDeleteButton.js";
 
 //импорт всех переменных.
-import { userInfoObj, profileEditButton, profileAddButton, formProfileElement, formCardElement, cardContainer, avatarPopupButton, profileAvatarImage, formAvatarElement } from "../utils/constants.js";
+import { userInfoObj, profileEditButton, profileAddButton, formProfileElement, formCardElement, cardContainer, avatarPopupButton, formAvatarElement } from "../utils/constants.js";
 
 //импорт объекта с "настройками" валидации
 import { validationConfig } from "../utils/constants.js";
@@ -25,7 +25,7 @@ const api = new Api({
     "Content-Type": "application/json",
   },
 });
-
+//один раз получим информацию о пользователе и отрендерим 30 карточек, полученных с помощью GET запроса.
 Promise.all([api.getUserData(), api.getInitialCards()])
   .then((res) => {
     const [userData, cardData] = res;

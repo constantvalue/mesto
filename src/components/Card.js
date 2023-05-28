@@ -17,13 +17,14 @@ export class Card {
     const cardElement = document.querySelector(this._cardTemplateSelector).content.querySelector(".element").cloneNode(true);
     return cardElement;
   }
-
+//проверяем есть ли в массиве лайков упоминание моего айдишника, который объявлен в конструкторе.
   isLikedByMe = () => {
     return this._likesArray.some((item) => {
       return item._id === this._myId;
     });
   };
 
+  //метод, в который попадет res из промиса.
   renderLikes(likes) {
     this._likesArray = likes;
     this._likeCount.textContent = this._likesArray.length;
@@ -34,6 +35,7 @@ export class Card {
     }
   }
 
+  //вызовем этот метод на экземпляре чтобы отрисовать лайки при загрузке страницы.
   _likeToggleOnPageLoad = () => {
     if (this.isLikedByMe()) {
       this._buttonLike.classList.add("element__like-button_active");
