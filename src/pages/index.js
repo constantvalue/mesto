@@ -97,20 +97,47 @@ const handleCardClick = (cardData) => {
 };
 
 const createCard = (element) => {
-  const card = new Card(element, "#card_template", handleCardClick, (element) => {
-    //Это функция коллбек сабмита попапа удаления карточки.
-    popupWithDelete.open();
-    popupWithDelete.setSubmitAction(() => {
+  const card = new Card(
+    element,
+    "#card_template",
+    handleCardClick,
+    (element) => {
+      //Это функция коллбек сабмита попапа удаления карточки.
+      popupWithDelete.open();
+      popupWithDelete.setSubmitAction(() => {
+        api
+          .cardDelete(element)
+          .then(() => {
+            card.removeCard();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+    },
+    //коллбек хендлера установки лайка
+    (element) => {
       api
-        .cardDelete(element)
-        .then(() => {
-          card.removeCard();
+        .likeCard(element)
+        .then((res) => {
+          card.renderLikes(res.likes);
         })
         .catch((error) => {
           console.log(error);
         });
-    });
-  });
+    },
+    // коллбек хендлера удаления лайка
+    (element) => {
+      api
+        .deleteLike(element)
+        .then((res) => {
+          card.renderLikes(res.likes);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  );
   const generatedCard = card.generateCard();
   section.addItem(generatedCard);
 };
