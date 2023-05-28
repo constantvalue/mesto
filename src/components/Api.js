@@ -60,4 +60,5 @@ export class Api {
       method: "DELETE",
     }).then(this._returnResponse);
   }
+
 }

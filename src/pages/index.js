@@ -32,9 +32,9 @@ Promise.all([api.getUserData(), api.getInitialCards()])
     userInfo.setId(userData._id);
     userInfo.setUserInfo(userData);
     cardData.forEach((item) => {
-        //на каждой итерации создадим поле myId в объекте карточки. В значение записываем мой айдишник.
-        //это будет использовано для метода лайков.
-        //также это используется для условной конструкции, которая проверяет необходимость отрисовки на карточке иконки урны.
+      //на каждой итерации создадим поле myId в объекте карточки. В значение записываем мой айдишник.
+      //это будет использовано для метода лайков.
+      //также это используется для условной конструкции, которая проверяет необходимость отрисовки на карточке иконки урны.
       item.myId = userData._id;
     });
     section.renderItems(cardData);
@@ -54,8 +54,14 @@ const profilePopupCreate = new PopupWithForm(".popup-profile", (data) => {
     .then((res) => {
       userInfo.setUserInfo(res);
     })
+    .then(() => {
+      profilePopupCreate.close();
+    })
     .catch((error) => {
       console.log(error);
+    })
+    .finally(() => {
+      profilePopupCreate.defaultTextState();
     });
 });
 profilePopupCreate.setEventListeners();
@@ -69,8 +75,14 @@ const avatarPopupCreate = new PopupWithForm(".popup-avatar", (inputData) => {
     .then((res) => {
       userInfo.setUserInfo(res);
     })
+    .then(() => {
+      avatarPopupCreate.close();
+    })
     .catch((error) => {
       console.log(error);
+    })
+    .finally(() => {
+      avatarPopupCreate.defaultTextState();
     });
 });
 
@@ -119,8 +131,14 @@ const cardPopupCreate = new PopupWithForm(".popup-card", (cardData) => {
       data.myId = userInfo.getId();
       createCard(data);
     })
+    .then(() => {
+      cardPopupCreate.close();
+    })
     .catch((error) => {
       console.log(error);
+    })
+    .finally(() => {
+      cardPopupCreate.defaultTextState();
     });
 });
 cardPopupCreate.setEventListeners();

@@ -1,5 +1,5 @@
 export class Card {
-  constructor(initialCard, cardTemplateSelector, showImagePopup, cardDeleteCallback) {
+  constructor(initialCard, cardTemplateSelector, showImagePopup, cardDeleteCallback, likesHandler) {
     this._myId = initialCard.myId;
     this._cardId = initialCard._id;
     this._ownerId = initialCard.owner._id;
@@ -7,6 +7,7 @@ export class Card {
     this._cardTemplateSelector = cardTemplateSelector;
     this._showImagePopup = showImagePopup;
     this._cardDeleteCallback = cardDeleteCallback;
+    this._likesHandler = likesHandler;
   }
 
   _getTemplate() {
@@ -48,6 +49,7 @@ export class Card {
     this._element.remove();
     this._element = null;
   }
+
 
   _toggleLike() {
     this._buttonLike.classList.toggle("element__like-button_active");

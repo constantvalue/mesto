@@ -6,7 +6,8 @@ export class PopupWithForm extends Popup {
     this._submit = submit;
     this._form = this._popupSelector.querySelector(".popup__form");
     this._formInputs = this._form.querySelectorAll(".popup__input");
-    this._submitButton = this._form.querySelector("popup__submit-button");
+    this._submitButton = this._form.querySelector(".popup__submit-button");
+    this._initialText = this._submitButton.textContent;
   }
 
   _getInputValues() {
@@ -19,17 +20,24 @@ export class PopupWithForm extends Popup {
 
   setInputValues(inputValues) {
     this._formInputs.forEach((input) => {
-      input.value = inputValues[input.name]
-    })
+      input.value = inputValues[input.name];
+    });
   }
 
   setEventListeners() {
     super.setEventListeners();
     this._form.addEventListener("submit", (event) => {
       event.preventDefault();
-      this._submit(this._getInputValues())
-      this.close();
+      this._submitButton.textContent = "Сохранение ...";
+      this._submit(this._getInputValues());
+      //метод close будем вызывать в .then. Иначе попап закрывается не дождавшись результата от fetch запроса.
+      // this.close();
     });
+  }
+
+  //метод возвращающий исходное состояние текста в конце промиса.
+  defaultTextState() {
+    this._submitButton.textContent = this._initialText;
   }
 
   close() {
