@@ -61,13 +61,16 @@ const profilePopupCreate = new PopupWithForm(".popup-profile", (data) => {
       console.log(error);
     })
     .finally(() => {
-      profilePopupCreate.defaultTextState();
+      profilePopupCreate.setDefaultTextState();
     });
 });
 profilePopupCreate.setEventListeners();
 
 // навешиваем слушатели и создаем экземпляр попапа для смены аватарки
-avatarPopupButton.addEventListener("click", () => avatarPopupCreate.open());
+avatarPopupButton.addEventListener("click", () => {
+  avatarPopupCreate.open();
+  formValidators[formAvatarElement.getAttribute("name")].resetErrors();
+});
 
 const avatarPopupCreate = new PopupWithForm(".popup-avatar", (inputData) => {
   api
@@ -82,7 +85,7 @@ const avatarPopupCreate = new PopupWithForm(".popup-avatar", (inputData) => {
       console.log(error);
     })
     .finally(() => {
-      avatarPopupCreate.defaultTextState();
+      avatarPopupCreate.setDefaultTextState();
     });
 });
 
@@ -96,7 +99,7 @@ const handleCardClick = (cardData) => {
   popupImage.open(cardData);
 };
 
-const createCard = (element) => {
+function getCard(element) {
   const card = new Card(
     element,
     "#card_template",
@@ -109,6 +112,9 @@ const createCard = (element) => {
           .cardDelete(element)
           .then(() => {
             card.removeCard();
+          })
+          .then(() => {
+            popupWithDelete.close();
           })
           .catch((error) => {
             console.log(error);
@@ -139,6 +145,11 @@ const createCard = (element) => {
     }
   );
   const generatedCard = card.generateCard();
+  return generatedCard;
+}
+
+const createCard = (element) => {
+  const generatedCard = getCard(element);
   section.addItem(generatedCard);
 };
 
@@ -165,7 +176,7 @@ const cardPopupCreate = new PopupWithForm(".popup-card", (cardData) => {
       console.log(error);
     })
     .finally(() => {
-      cardPopupCreate.defaultTextState();
+      cardPopupCreate.setDefaultTextState();
     });
 });
 cardPopupCreate.setEventListeners();
@@ -174,25 +185,34 @@ cardPopupCreate.setEventListeners();
 profileEditButton.addEventListener("click", function () {
   profilePopupCreate.open();
   profilePopupCreate.setInputValues(userInfo.getUserInfo());
-  popupProfileValidator.resetErrors();
+  formValidators[formProfileElement.getAttribute("name")].resetErrors();
 });
 
 //Слушатель для кнопки добавления (попап Card)
 profileAddButton.addEventListener("click", function () {
   cardPopupCreate.open();
-  popupCardValidator.resetErrors();
+  formValidators[formCardElement.getAttribute("name")].resetErrors();
 });
 
 // ---------------------------------------------VALIDATION-------------------------------------------------------------------
 
-//создаем включаем валидацию на формах.
-const popupProfileValidator = new FormValidator(validationConfig, formProfileElement);
-popupProfileValidator.enableValidation();
+const formValidators = {};
 
-const popupCardValidator = new FormValidator(validationConfig, formCardElement);
-popupCardValidator.enableValidation();
+// Включение валидации
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector));
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement);
+    // получаем данные из атрибута `name` у формы
+    const formName = formElement.getAttribute("name");
 
-const popupAvatarValidator = new FormValidator(validationConfig, formAvatarElement);
-popupAvatarValidator.enableValidation();
+    // вот тут в объект записываем под именем формы
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
 
-// --------------------------------------------------------------------------
+enableValidation(validationConfig);
+
+// // --------------------------------------------------------------------------
+

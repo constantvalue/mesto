@@ -17,7 +17,7 @@ export class Card {
     const cardElement = document.querySelector(this._cardTemplateSelector).content.querySelector(".element").cloneNode(true);
     return cardElement;
   }
-//проверяем есть ли в массиве лайков упоминание моего айдишника, который объявлен в конструкторе.
+  //проверяем есть ли в массиве лайков упоминание моего айдишника, который объявлен в конструкторе.
   isLikedByMe = () => {
     return this._likesArray.some((item) => {
       return item._id === this._myId;
@@ -28,15 +28,11 @@ export class Card {
   renderLikes(likes) {
     this._likesArray = likes;
     this._likeCount.textContent = this._likesArray.length;
-    if (this.isLikedByMe()) {
-      this._buttonLike.classList.add("element__like-button_active");
-    } else {
-      this._buttonLike.classList.remove("element__like-button_active");
-    }
+    this._toggleLike();
   }
 
   //вызовем этот метод на экземпляре чтобы отрисовать лайки при загрузке страницы.
-  _likeToggleOnPageLoad = () => {
+  _toggleLike = () => {
     if (this.isLikedByMe()) {
       this._buttonLike.classList.add("element__like-button_active");
     } else {
@@ -57,7 +53,7 @@ export class Card {
     //навешиваем слушатели с помощью приватного метода.
     this._isTrashButtonVisible();
     this._likeCount.textContent = this._likesArray.length;
-    this._likeToggleOnPageLoad();
+    this._toggleLike();
     this._setEventListeners();
 
     //возвращаем ноду с новыми значениями.
@@ -88,7 +84,7 @@ export class Card {
 
     this._element.querySelector(".element__trash-button").addEventListener("click", () => this._cardDeleteCallback(this));
 
-    this._element.querySelector(".element__like-button").addEventListener("click", () => {
+    this._buttonLike.addEventListener("click", () => {
       if (this.isLikedByMe()) {
         this._dislikeHandler(this);
       } else {

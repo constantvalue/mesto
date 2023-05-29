@@ -4,7 +4,7 @@ export class PopupWithForm extends Popup {
   constructor(popupSelector, submit) {
     super(popupSelector);
     this._submit = submit;
-    this._form = this._popupSelector.querySelector(".popup__form");
+    this._form = this._popup.querySelector(".popup__form");
     this._formInputs = this._form.querySelectorAll(".popup__input");
     this._submitButton = this._form.querySelector(".popup__submit-button");
     this._initialText = this._submitButton.textContent;
@@ -36,7 +36,7 @@ export class PopupWithForm extends Popup {
   }
 
   //метод возвращающий исходное состояние текста в конце промиса.
-  defaultTextState() {
+  setDefaultTextState() {
     this._submitButton.textContent = this._initialText;
   }
 

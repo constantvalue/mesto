@@ -5,7 +5,7 @@ import { Popup } from "./Popup.js";
 export class PopupWithDeleteButton extends Popup {
   constructor(popupSelector) {
     super(popupSelector);
-    this._form = this._popupSelector.querySelector(".popup__form");
+    this._form = this._popup.querySelector(".popup__form");
   }
 
   setEventListeners() {
@@ -13,7 +13,6 @@ export class PopupWithDeleteButton extends Popup {
     this._form.addEventListener("submit", (event) => {
       event.preventDefault();
       this._submitCallback();
-      this.close();
     });
   }
 
